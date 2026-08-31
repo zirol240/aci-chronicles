@@ -1,979 +1,1857 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>A.C.I. — Хроники Сдерживания</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: #1a1a1a;
+        color: #b8b8b8;
+        font-family: "Courier New", Courier, monospace;
+        line-height: 1.6;
+        padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .stamp {
+        border: 3px solid #8b0000;
+        color: #8b0000;
+        display: inline-block;
+        padding: 8px 20px;
+        font-weight: bold;
+        font-size: 1.2em;
+        transform: rotate(-2deg);
+        margin-bottom: 30px;
+        letter-spacing: 2px;
+      }
+      h1 {
+        color: #d4d4d4;
+        font-size: 1.8em;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #444;
+        padding-bottom: 10px;
+      }
+      h2 {
+        color: #a0a0a0;
+        font-size: 1.3em;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .epigraph {
+        margin: 25px 0;
+        padding: 15px 20px;
+        border-left: 3px solid #555;
+        background-color: #222;
+        font-style: italic;
+        color: #999;
+      }
+      .epigraph-author {
+        text-align: right;
+        margin-top: 10px;
+        font-style: normal;
+        color: #777;
+        font-size: 0.9em;
+      }
+      .archive-note {
+        background-color: #252525;
+        border: 1px solid #444;
+        padding: 15px;
+        margin: 20px 0;
+        font-size: 0.95em;
+      }
+      .handwritten {
+        color: #a67c52;
+        font-style: italic;
+        margin-top: 10px;
+      }
+      .summary-box {
+        border: 1px solid #444;
+        padding: 20px;
+        margin: 20px 0;
+        background-color: #1f1f1f;
+      }
+      .summary-item {
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #333;
+      }
+      .summary-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+      .label {
+        color: #8b8b8b;
+        font-weight: bold;
+        display: inline-block;
+        min-width: 220px;
+      }
+      .journal-entry {
+        margin-bottom: 20px;
+        padding-left: 15px;
+        border-left: 2px solid #333;
+      }
+      .timestamp {
+        color: #8b0000;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+      }
+      .dialogue {
+        color: #c0c0c0;
+        margin: 8px 0;
+        padding-left: 20px;
+      }
+      .dialogue .speaker {
+        color: #8b8b8b;
+      }
+      .divider {
+        text-align: center;
+        margin: 30px 0;
+        color: #555;
+        letter-spacing: 10px;
+      }
+      .conclusions {
+        background-color: #1f1f1f;
+        border: 1px solid #444;
+        padding: 20px;
+      }
+      .conclusions ol {
+        padding-left: 25px;
+      }
+      .conclusions li {
+        margin-bottom: 12px;
+      }
+      .epilogue {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #222;
+        border-top: 2px solid #444;
+        border-bottom: 2px solid #444;
+      }
+      .three-knocks {
+        text-align: center;
+        font-weight: bold;
+        color: #8b0000;
+        margin: 15px 0;
+        letter-spacing: 3px;
+      }
+      .classified {
+        color: #8b0000;
+        font-weight: bold;
+      }
+      .footer {
+        margin-top: 60px;
+        padding-top: 30px;
+        border-top: 2px solid #333;
+        text-align: center;
+        color: #555;
+        font-size: 0.85em;
+      }
+      .footer a {
+        color: #777;
+        text-decoration: none;
+      }
+      .footer a:hover {
+        color: #aaa;
+      }
+
+      /* ===== ОГЛАВЛЕНИЕ ===== */
+      .toc {
+        margin: 30px 0 40px 0;
+        padding: 20px 25px;
+        background-color: #1f1f1f;
+        border: 1px solid #444;
+        border-radius: 4px;
+      }
+      .toc-title {
+        color: #8b8b8b;
+        font-size: 1.1em;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #333;
+        padding-bottom: 8px;
+      }
+      .toc ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .toc li {
+        margin: 8px 0;
+        padding: 6px 0;
+        border-bottom: 1px solid #2a2a2a;
+        display: flex;
+        align-items: center;
+      }
+      .toc li:last-child {
+        border-bottom: none;
+      }
+      .toc .num {
+        color: #8b0000;
+        font-weight: bold;
+        min-width: 32px;
+        display: inline-block;
+        font-size: 0.9em;
+      }
+      .toc a {
+        color: #b8b8b8;
+        text-decoration: none;
+        transition: color 0.2s;
+        padding: 4px 8px;
+        border-radius: 2px;
+      }
+      .toc a:hover {
+        color: #ffffff;
+        background-color: #2a2a2a;
+        text-decoration: underline;
+      }
+      .toc .chapter-label {
+        color: #666;
+        font-size: 0.8em;
+        margin-left: auto;
+        letter-spacing: 1px;
+      }
+
+      @media (max-width: 600px) {
         body {
-            background-color: #1a1a1a;
-            color: #b8b8b8;
-            font-family: 'Courier New', Courier, monospace;
-            line-height: 1.6;
-            padding: 20px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .stamp {
-            border: 3px solid #8b0000;
-            color: #8b0000;
-            display: inline-block;
-            padding: 8px 20px;
-            font-weight: bold;
-            font-size: 1.2em;
-            transform: rotate(-2deg);
-            margin-bottom: 30px;
-            letter-spacing: 2px;
+          padding: 15px;
+          font-size: 0.9em;
         }
         h1 {
-            color: #d4d4d4;
-            font-size: 1.8em;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #444;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #a0a0a0;
-            font-size: 1.3em;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .epigraph {
-            margin: 25px 0;
-            padding: 15px 20px;
-            border-left: 3px solid #555;
-            background-color: #222;
-            font-style: italic;
-            color: #999;
-        }
-        .epigraph-author {
-            text-align: right;
-            margin-top: 10px;
-            font-style: normal;
-            color: #777;
-            font-size: 0.9em;
-        }
-        .archive-note {
-            background-color: #252525;
-            border: 1px solid #444;
-            padding: 15px;
-            margin: 20px 0;
-            font-size: 0.95em;
-        }
-        .handwritten {
-            color: #a67c52;
-            font-style: italic;
-            margin-top: 10px;
-        }
-        .summary-box {
-            border: 1px solid #444;
-            padding: 20px;
-            margin: 20px 0;
-            background-color: #1f1f1f;
-        }
-        .summary-item {
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #333;
-        }
-        .summary-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
+          font-size: 1.4em;
         }
         .label {
-            color: #8b8b8b;
-            font-weight: bold;
-            display: inline-block;
-            min-width: 220px;
+          display: block;
+          margin-bottom: 3px;
         }
-        .journal-entry {
-            margin-bottom: 20px;
-            padding-left: 15px;
-            border-left: 2px solid #333;
+        .stamp {
+          font-size: 1em;
+          padding: 6px 15px;
         }
-        .timestamp {
-            color: #8b0000;
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .dialogue {
-            color: #c0c0c0;
-            margin: 8px 0;
-            padding-left: 20px;
-        }
-        .dialogue .speaker {
-            color: #8b8b8b;
-        }
-        .divider {
-            text-align: center;
-            margin: 30px 0;
-            color: #555;
-            letter-spacing: 10px;
-        }
-        .conclusions {
-            background-color: #1f1f1f;
-            border: 1px solid #444;
-            padding: 20px;
-        }
-        .conclusions ol {
-            padding-left: 25px;
-        }
-        .conclusions li {
-            margin-bottom: 12px;
-        }
-        .epilogue {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #222;
-            border-top: 2px solid #444;
-            border-bottom: 2px solid #444;
-        }
-        .three-knocks {
-            text-align: center;
-            font-weight: bold;
-            color: #8b0000;
-            margin: 15px 0;
-            letter-spacing: 3px;
-        }
-        .classified {
-            color: #8b0000;
-            font-weight: bold;
-        }
-        .footer {
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 2px solid #333;
-            text-align: center;
-            color: #555;
-            font-size: 0.85em;
-        }
-        .footer a {
-            color: #777;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            color: #aaa;
-        }
-
-        /* ===== ОГЛАВЛЕНИЕ ===== */
         .toc {
-            margin: 30px 0 40px 0;
-            padding: 20px 25px;
-            background-color: #1f1f1f;
-            border: 1px solid #444;
-            border-radius: 4px;
-        }
-        .toc-title {
-            color: #8b8b8b;
-            font-size: 1.1em;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 8px;
-        }
-        .toc ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+          padding: 15px;
         }
         .toc li {
-            margin: 8px 0;
-            padding: 6px 0;
-            border-bottom: 1px solid #2a2a2a;
-            display: flex;
-            align-items: center;
-        }
-        .toc li:last-child {
-            border-bottom: none;
-        }
-        .toc .num {
-            color: #8b0000;
-            font-weight: bold;
-            min-width: 32px;
-            display: inline-block;
-            font-size: 0.9em;
-        }
-        .toc a {
-            color: #b8b8b8;
-            text-decoration: none;
-            transition: color 0.2s;
-            padding: 4px 8px;
-            border-radius: 2px;
-        }
-        .toc a:hover {
-            color: #ffffff;
-            background-color: #2a2a2a;
-            text-decoration: underline;
+          flex-wrap: wrap;
         }
         .toc .chapter-label {
-            color: #666;
-            font-size: 0.8em;
-            margin-left: auto;
-            letter-spacing: 1px;
+          margin-left: 0;
+          font-size: 0.7em;
         }
-
-        @media (max-width: 600px) {
-            body { padding: 15px; font-size: 0.9em; }
-            h1 { font-size: 1.4em; }
-            .label { display: block; margin-bottom: 3px; }
-            .stamp { font-size: 1em; padding: 6px 15px; }
-            .toc { padding: 15px; }
-            .toc li { flex-wrap: wrap; }
-            .toc .chapter-label { margin-left: 0; font-size: 0.7em; }
-        }
+      }
     </style>
-</head>
-<body>
-
-<!-- ================================================================ -->
-<!-- ГРИФ И ОГЛАВЛЕНИЕ -->
-<!-- ================================================================ -->
-<div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
-
-<div class="toc">
-    <div class="toc-title">═════ СОДЕРЖАНИЕ ═════</div>
-    <ul>
-        <li><span class="num">00</span> <a href="#about">О проекте</a> <span class="chapter-label">— введение</span></li>
-        <li><span class="num">01</span> <a href="#prologue">Пролог. Мир Атлас-Прайм</a> <span class="chapter-label">— вселенная</span></li>
-        <li><span class="num">02</span> <a href="#chapter1">Глава 1. Молчаливый Полдень</a> <span class="chapter-label">— A-006</span></li>
-        <li><span class="num">03</span> <a href="#chapter2">Глава 2. Красный Прилив</a> <span class="chapter-label">— A-007</span></li>
-        <li><span class="num">04</span> <a href="#chapter3">Глава 3. Гул Пустоты</a> <span class="chapter-label">— A-008</span></li>
-        <li><span class="num">05</span> <a href="#chapter4">Глава 4. Железный Лес</a> <span class="chapter-label">— A-009</span></li>
-        <li><span class="num">06</span> <a href="#chapter5">Глава 5. Пустынный Глаз</a> <span class="chapter-label">— A-010</span></li>
-        <li><span class="num">07</span> <a href="#rights">Авторство и права</a> <span class="chapter-label">— копирайт</span></li>
-    </ul>
-</div>
-
-<!-- ================================================================ -->
-<!-- 1. О ПРОЕКТЕ -->
-<!-- ================================================================ -->
-<div id="about"></div>
-<div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
-
-<h1>О ПРОЕКТЕ</h1>
-
-<p><strong>Автор:</strong> SpaceRus</p>
-<p><strong>Канал:</strong> <a href="https://www.youtube.com/@Space_Rus_240" target="_blank" style="color:#888; text-decoration:underline;">www.youtube.com/@Space_Rus_240</a></p>
-<p><strong>Проект:</strong> Цикл рассказов «A.C.I. — Хроники Сдерживания»</p>
-<p><strong>Вселенная:</strong> «Атлас-Прайм» (оригинальный сеттинг)</p>
-
-<p>«A.C.I. — Хроники Сдерживания» — это серия отчётов секретного агентства, которое расследует и изолирует феномены на планете Атлас-Прайм. Каждая глава — одна операция. Один феномен. Один отчёт.</p>
-
-<p>Стиль произведений сочетает в себе несколько направлений. Атмосфера взята из мира «Метро 2033» — напряжённая, мрачная, создающая ощущение, что всё описанное могло произойти на самом деле. Подача брифингов напоминает стиль Ace Combat 7 — чёткая, сухая, по делу, без лишних эмоций. Документальная эстетика подчёркивает реалистичность происходящего.</p>
-
-<div class="archive-note">
-    <strong>РАСПИСАНИЕ ПУБЛИКАЦИЙ</strong><br><br>
-    <ul style="list-style: none; padding-left: 0;">
-        <li style="margin-bottom: 8px;"><strong>Одна глава в неделю.</strong></li>
-        <li style="margin-bottom: 8px;"><strong>Объём:</strong> 1200–1800 слов.</li>
-        <li style="margin-bottom: 8px;"><strong>Выход:</strong> каждый понедельник в 20:00 МСК.</li>
-        <li style="margin-bottom: 8px;"><strong>Публикация:</strong> только в Telegram-канале автора.</li>
-    </ul>
-    <p><strong>Старт проекта:</strong> 20 июля 2026 года.</p>
-</div>
-
-<!-- ================================================================ -->
-<!-- 2. ПРОЛОГ. МИР АТЛАС-ПРАЙМ -->
-<!-- ================================================================ -->
-<div id="prologue"></div>
-<div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
-
-<h1>ПРОЛОГ. МИР АТЛАС-ПРАЙМ</h1>
-
-<p>Атлас-Прайм — планета, на которой человечество построило свою цивилизацию, но так и не научилось контролировать всё, что скрыто в её глубинах. Диаметр мира составляет девятнадцать тысяч сто километров — в полтора раза больше Земли. Гравитация здесь тяжелее, каждый шаг требует чуть больше усилий, каждый полёт — чуть больше топлива. Восемь миллиардов двести миллионов человек населяют четырнадцать республик, объединённых в Федерацию Атласских Государств. Единое правительство располагается в Порт-Атласе — городе-порте, ставшем политическим и экономическим центром планеты.</p>
-
-<p>Технологический уровень Атласа-Прайм — это мир, где ядерная энергетика стала обыденностью, компактные термоядерные реакторы питают города и корабли, авиация достигла предела своих возможностей, а космическая программа вышла на орбиту и закрепилась там. Высокоманевренные истребители с искусственным интеллектом патрулируют небо, дроны-камикадзе наносят точечные удары, орбитальные платформы следят за поверхностью. Но за этим фасадом прогресса скрывается то, что не вписывается в учебники физики и инженерные расчёты.</p>
-
-<p>Вооружённые силы планеты объединены под командованием Объединённого Командования Атласа. Космическая программа развивается силами Атласской космической инициативы. Постоянно действующая станция «Горизонт-7» находится на орбите, база на спутнике Терра-2 уже работает, и в планах — экспедиция к поясу астероидов. Человечество смотрит вверх, в звёзды, не подозревая, что самые опасные угрозы прячутся не в космосе, а на своей собственной планете.</p>
-
-<p>Именно для работы с этими угрозами было создано агентство A.C.I. — Atlas Control &amp; Isolation. Формально — научно-исследовательская структура при Объединённом Командовании. Фактически — «тёмная рука» Федерации, занимающаяся расследованием, сдерживанием и изоляцией феноменов, не поддающихся объяснению с позиций современной науки. Агентство появилось после катастрофы в секторе «Молчаливый Полдень». Что именно произошло — засекречено. Известно лишь одно: после тех событий было принято решение, что некоторые тайны не должны становиться достоянием общественности.</p>
-
-<p>Принцип A.C.I. прост и жесток: «Лучше потерять миссию, чем потерять контроль». Агенты работают в тени. Их отчёты никогда не попадают в открытый доступ. Их потери никогда не озвучиваются официально. Они существуют ровно до тех пор, пока нужны. И исчезают, когда становится слишком поздно.</p>
-
-<div class="archive-note">
-    <strong>КЛАССИФИКАЦИЯ ФЕНОМЕНОВ (A.C.I.)</strong>
-    <ul style="list-style: none; padding-left: 0;">
-        <li style="margin-top: 10px;"><strong>Пассивный</strong> — феномен не проявляет активности без внешнего воздействия. Поведение стабильно. Может находиться под наблюдением без немедленного вмешательства.</li>
-        <li style="margin-top: 10px;"><strong>Активный</strong> — феномен проявляет целенаправленную активность. Требует постоянного мониторинга и оперативного реагирования.</li>
-        <li style="margin-top: 10px;"><strong>Критический</strong> — феномен представляет непосредственную угрозу для жизни и инфраструктуры. Требует немедленной изоляции или нейтрализации.</li>
-    </ul>
-</div>
-
-<div class="archive-note">
-    <strong>ВЕКТОРЫ ВОЗДЕЙСТВИЯ</strong>
-    <ul style="list-style: none; padding-left: 0;">
-        <li style="margin-top: 10px;"><strong>Биологический</strong> — воздействие на живые организмы, модификация тканей или поведения.</li>
-        <li style="margin-top: 10px;"><strong>Механический</strong> — физическое воздействие на материю, разрушение конструкций.</li>
-        <li style="margin-top: 10px;"><strong>Энергетический</strong> — воздействие на электромагнитные поля, сигналы, энергию.</li>
-        <li style="margin-top: 10px;"><strong>Псионический</strong> — воздействие на сознание, восприятие, поведение.</li>
-    </ul>
-</div>
-
-<p>Этот цикл — хроники работы агентства A.C.I. Каждая глава — отчёт об одной операции. Один феномен. Одна команда. Один результат, который никогда не будет обнародован. Только здесь, в этих записях, сохраняется правда о том, что скрыто под поверхностью Атласа-Прайм.</p>
-
-<!-- ================================================================ -->
-<!-- 3. ГЛАВА 1. МОЛЧАЛИВЫЙ ПОЛДЕНЬ -->
-<!-- ================================================================ -->
-<div id="chapter1"></div>
-<div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
-
-<h1>ГЛАВА 1: МОЛЧАЛИВЫЙ ПОЛДЕНЬ</h1>
-<div style="color: #666; font-size: 0.9em; margin-bottom: 20px;">Феномен A-006 | Классификация: Активный | Вектор: Механический, Энергетический</div>
-
-<div class="epigraph">
-    «Я не знаю, как убить океан.»
-    <div class="epigraph-author">— Капитан Маркус Рейнольдс, показания после операции</div>
-</div>
-
-<div class="archive-note">
-    <strong>АРХИВНАЯ ВРЕЗКА</strong><br><br>
-    Операция «Молчаливый Полдень» — первое задокументированное столкновение с феноменом, позже получившим классификацию <strong>A-006</strong>. Свидетельства собраны на основе показаний выживших, включая капитана Маркуса Рейнольдса, который после операции был списан на берег по психическому состоянию. Его показания считаются противоречивыми, однако их содержание повторяется с пугающей точностью.
-    <div class="handwritten">[Приписка от руки: «Считать данные ошибочными. Проверить повторно. Подпись: [неразборчиво]».]</div>
-</div>
-
-<h2>Сводка данных</h2>
-<div class="summary-box">
-    <div class="summary-item"><span class="label">Номер феномена:</span> A-006</div>
-    <div class="summary-item"><span class="label">Кодовое название:</span> «Карен»</div>
-    <div class="summary-item"><span class="label">Классификация:</span> <span class="classified">Активный</span></div>
-    <div class="summary-item"><span class="label">Вектор воздействия:</span> Механический, Энергетический</div>
-    <div class="summary-item"><span class="label">Дата операции:</span> 27.03.2247</div>
-    <div class="summary-item"><span class="label">Оперативный сектор:</span> Океан Атласа-Прайм, координаты 31.2°S, 89.4°W</div>
-    <div class="summary-item"><span class="label">Описание:</span> Механобиологическая структура кальмароподобной морфологии. Размах щупалец — 45–60 м. Зона активности фиксирована, глубина 80–120 м. Поведение циклично: периоды акустической эмиссии сменяются тишиной.</div>
-    <div class="summary-item"><span class="label">Акустические характеристики:</span> Импульсы на частоте 17.5 Гц с повторением 46.7 секунды. Магнитное поле искажено на 0.3% на дистанции 500 м. Гидролокация бесполезна — нулевая эхо-сигнатура.</div>
-    <div class="summary-item"><span class="label">Подтверждённые инциденты:</span> 24.03 — потеря контейнеровоза «Атлас Принцесс»; 25.03 — аномальное отклонение лайнера «Арктика Эйр 77».</div>
-    <div class="summary-item"><span class="label">Актуальные угрозы:</span> Территориальность, структурное воздействие, электромагнитное поле (радиус 1.5 км), тактическая маскировка.</div>
-</div>
-
-<h2>Журнал операции</h2>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 12:47</span>
-    Авианосец NAV-1 «Посейдон» занимает позицию в 12 км к северо-востоку от цели. С палубы поднимаются два тяжёлых гидросамолёта AVL-2 «Альбатрос» и один ударно-разведывательный вертолёт VRT-1 «Буревестник». Вода в квадрате аномально спокойна. Полный штиль.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 12:50</span>
-    Старший акустик Кортес докладывает о низкочастотном гуле. Командир Рейнольдс приказывает фиксировать.
-    <div class="dialogue"><span class="speaker">Кортес:</span> «Я слышу его дыхание, Марк. За десять минут до того, как оно поднялось. Я слышал, как оно дышит. Это не эхо. Это не помехи. Это… дыхание.»</div>
-    Рейнольдс знает, что Кортес прав. Он чувствует это кожей — тем местом, где страх прячется от логики. Но он не может признать это. Потому что тогда ему придётся остановить миссию. А за его спиной — приказ командования и восемьсот человек на борту.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 13:05</span>
-    Пилот AVL-2 капитан Элена Восс докладывает о визуальном контакте. С высоты 600 метров она видит тень на дне. Приблизительно 55 метров в размахе. Существо лежит на дне. Спокойно. Словно ждёт.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 13:20</span>
-    Сброшен подводный дрон. Он опускается на глубину 60 метров. Оптика передаёт изображение: центральное тело около 8 метров в диаметре. Металлическое. Чёрное. На поверхности — геометрические узоры. Щупальца начинают шевелиться. Дрон останавливается в 15 метрах. Объект касается его корпуса. Изучает. Затем — резкий рывок. Дрон раздавлен. Давление: 45 мегапаскалей за 0.3 секунды.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 13:27</span>
-    Капитан Восс запрашивает разрешение на сброс второго дрона. Рейнольдс колеблется. Кортес предупреждает.
-    <div class="dialogue"><span class="speaker">Кортес:</span> «Не подходи к ней близко. Я слышу, как она считает. Три удара. Ритм. Она считает нас, Марк. Как овец перед забоем.»</div>
-    Рейнольдс отдаёт приказ. Он не может остановиться. Он уже потерял один корабль — «Атлас Принцесс» пять лет назад. Тридцать погибших. Он не может потерять этот. Он не может признать, что ошибается. Это решение ему предстоит вспоминать до конца жизни. Восс улыбается в камеру. Это её последняя улыбка.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 13:31</span>
-    Щупальце вырывается из воды. Скорость — 32 м/с. Высота — 120 метров. Оно обвивает левое крыло AVL-2. Последнее сообщение Восс обрывается на полуслове. Гидросамолёт падает с высоты 70 метров. Взрыв. Огненный шар. Обломки погружаются.
-    <div style="margin-top: 10px;"><strong>Потери:</strong> один гидросамолёт AVL-2 «Феникс», два пилота. Капитан Элена Восс и её второй пилот погибли.</div>
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 14:10</span>
-    Объект уходит на глубину. Рейнольдс отдаёт приказ на отход. Кортес записывает в журнал.
-    <div class="dialogue"><span class="speaker">Кортес:</span> «Ритм не прервался. Три удара. Пауза. Три удара. Даже когда оно уходит, оно продолжает считать. Оно знает, что мы вернёмся.»</div>
-</div>
-
-<div class="divider">* * *</div>
-
-<h2>Выводы</h2>
-<div class="conclusions">
-    <ol>
-        <li>Анализ акустических импульсов выявил вторичную частоту — 23.8 Гц, появляющуюся за 8.2 секунды до акта агрессии. Это может быть предупреждением или активацией защитного механизма.</li>
-        <li>Металлическая структура состоит из титано-никелевого сплава с вкраплениями неизвестного материала, отражающего рентгеновское излучение почти на 100%. Технологии превосходят современные разработки.</li>
-        <li>Поведение объекта не сводится к простой агрессии. Он изучает дрон. Он уничтожил гидросамолёт, но не тронул авианосец. Это указывает на интеллект и способность оценивать угрозу.</li>
-        <li><strong>Гипотеза:</strong> A-006 является автоматизированной защитной системой, предназначенной для охраны точки 31.2°S, 89.4°W. Предположительно, эта точка скрывает вход в подводную структуру.</li>
-        <li><strong>Условия изоляции:</strong> Установлен периметр контроля в 5 км. При активации объекта — немедленный отход на 10 км. Ежедневный акустический мониторинг обязателен.</li>
-    </ol>
-</div>
-
-<h2>Эпилог</h2>
-<div class="epilogue">
-    Рейнольдс стоял у иллюминатора. В одной руке он держал фотографию погибших с «Атлас Принцесс». Тридцать лиц, которые он помнил поимённо. Он положил её на стол. Вода за стеклом была чёрной и неподвижной. Вода смотрела на него. Он увидел своё отражение. За его плечом — тень. Светящаяся точка. Та, что была у капсулы «Лемминг-9». Он не обернулся. Знал, что там никого нет. Через неделю он подал рапорт об увольнении. Через месяц его списали на берег. Через год он уехал в горы, где нет воды.
-
-    <div class="three-knocks">Тук. Тук. Тук.</div>
-
-    Говорят, он до сих пор смотрит на зеркала и видит там не только себя, но и что-то ещё. Говорят, он до сих пор слышит ритм. Три удара. Тишина.
-</div>
-
-<!-- ================================================================ -->
-<!-- 4. ГЛАВА 2. КРАСНЫЙ ПРИЛИВ -->
-<!-- ================================================================ -->
-<div id="chapter2"></div>
-<div style="margin: 60px 0;"></div>
-<div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
-
-<h1>ГЛАВА 2: КРАСНЫЙ ПРИЛИВ</h1>
-<div style="color: #666; font-size: 0.9em; margin-bottom: 20px;">Феномен A-007 | Классификация: Активный | Вектор: Биологический, Псионический</div>
-
-<div class="epigraph">
-    «Они не чувствуют боли, потому что боль — это сигнал об ошибке. А ошибок в их конструкции просто нет.»
-    <div class="epigraph-author">— Доктор Е. Фридман, полевой дневник</div>
-</div>
-
-<div class="archive-note">
-    <strong>АРХИВНАЯ ВРЕЗКА</strong><br><br>
-    Операция «Красный Прилив» — второе задокументированное столкновение с феноменом сети A-006–A-010. Впервые зафиксировано биологическое воздействие на людей. Материалы собраны на основе показаний капитана Виктора Стоуна, после операции отстранённого от полевой работы.
-    <div class="handwritten">[Приписка от руки: «Он видел её лицо. Он видел жену. — Д.»]</div>
-</div>
-
-<h2>Сводка данных</h2>
-<div class="summary-box">
-    <div class="summary-item"><span class="label">Номер феномена:</span> A-007</div>
-    <div class="summary-item"><span class="label">Кодовое название:</span> «Красный Прилив»</div>
-    <div class="summary-item"><span class="label">Классификация:</span> <span class="classified">Активный</span></div>
-    <div class="summary-item"><span class="label">Вектор воздействия:</span> Биологический, Псионический</div>
-    <div class="summary-item"><span class="label">Дата операции:</span> 04.04.2247</div>
-    <div class="summary-item"><span class="label">Оперативный сектор:</span> Порт-Фрейзер, координаты 12.4°S, 145.7°W</div>
-    <div class="summary-item"><span class="label">Описание:</span> Группа людей, подвергшихся биологической модификации. Утрата болевой чувствительности, речи, самостоятельности. Действия скоординированы, подчинены единой цели. Температура тела: 39.2°C. Зрачковый рефлекс отсутствует. Частота шагов: 126 уд/мин.</div>
-    <div class="summary-item"><span class="label">Подтверждённые инциденты:</span> 04.04 — группа из 12 человек в рабочей одежде движется к складу боеприпасов «Форпост-7».</div>
-    <div class="summary-item"><span class="label">Актуальные угрозы:</span> Биологическое заражение, координация (внешнее управление), целенаправленность действий, отсутствие диалога.</div>
-</div>
-
-<h2>Журнал операции</h2>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 04:47</span>
-    Поступило сообщение от береговой охраны Порт-Фрейзера. Группа из двенадцати человек в рабочей одежде замечена движущейся вдоль пирса в направлении склада «Форпост-7». Охрана склада запросила идентификацию. Группа не ответила. При попытке остановить их — охрана была атакована. Двое охранников госпитализированы с переломами и рваными ранами.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 06:30</span>
-    Капитан Виктор Стоун получает оперативный приказ: перехватить группу, изолировать, сохранить биоматериал для анализа.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 08:30</span>
-    Группа GRD-3 «Молот» выдвигается на двух бронетранспортёрах к координатам 12.4°S, 145.7°W.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 08:42</span>
-    Визуальный контакт. Двенадцать человек движутся колонной по два человека. Темп ровный, без остановок. Один из нарушителей несёт металлический прут. Остальные без оружия. Стоун приказывает блокировать дорогу. Первый бронетранспортёр выезжает перед колонной. Второй заходит с тыла.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 08:44</span>
-    Стоун выходит из машины. Он подходит к колонне. Он смотрит в их лица. Они смотрят сквозь него.
-    <div class="dialogue"><span class="speaker">Стоун:</span> «Группа, стоп. Вам приказано остановиться. Вы находитесь в закрытой зоне. Немедленно прекратите движение.»</div>
-    Нарушители не останавливаются. Они продолжают двигаться, не меняя скорости. Стоун замечает, что они не моргают. Их глаза открыты, но в них нет жизни.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 08:45</span>
-    Приказ открыть предупредительный огонь в воздух. Два выстрела. Нарушители не реагируют. Первый ряд колонны достигает бронетранспортёра. Нарушитель с металлическим прутом ударяет по корпусу. Прут гнётся. Он продолжает бить, пока кисть не ломается. Он не издаёт ни звука. Он продолжает наносить удары сломанной рукой.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 08:47</span>
-    Стоун отдаёт приказ на силовое задержание. Группа выдвигается с щитами и дубинками. Первый боец GRD-3, попытавшийся скрутить нарушителя, отброшен ударом на 4 метра. Перелом ключицы и трёх рёбер. Нарушители не защищаются. Они наступают. Стоун подходит к женщине с нарисованной улыбкой. Он подносит руку к её лицу, чтобы проверить зрачки. Она ударяет его по тому месту, где у него под броней находится сердце. Он падает на колени. Он не может дышать. Он смотрит на неё снизу вверх. И на секунду он видит не её. Он видит свою жену. В тот день. В больнице. Она смотрела на него и говорила: «Не уходи». А он ушёл. Он не мог смотреть, как она умирает. Теперь эта женщина стояла над ним. Она смотрела на него так же. Он не мог отвести взгляд.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 08:48</span>
-    К нему подошёл гражданский — мужчина в оранжевой жилетке. Он смотрел на тела. Он сказал тихо.
-    <div class="dialogue"><span class="speaker">Гражданский:</span> «Они не виноваты, капитан. Они просто хотели, чтобы их оставили в покое.»</div>
-    Стоун смотрел на него. Он ничего не говорил. Гражданский ушёл. Стоун остался один. Он крикнул.
-    <div class="dialogue"><span class="speaker">Стоун:</span> «Огонь! Всем — огонь!»</div>
-    Его голос сорвался. Это был не приказ. Это был крик отчаяния. Человека, который больше не может смотреть на пустоту.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 08:52</span>
-    Группа применяет летальные средства. Выстрелы в конечности. Нарушители падают, но продолжают ползти к складу. Они не издают ни звука. Они просто двигаются к цели. Последняя из двенадцати — женщина с нарисованной улыбкой — достигает бронетранспортёра. Она начинает биться головой о броню, разбивая лицо. Она не останавливается, пока не теряет сознание.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 09:05</span>
-    Все двенадцать нарушителей обездвижены. Десять живы. Двое скончались. Потери: 3 человека ранено, 1 тяжело. Нарушители: 2 погибших, 10 изолированы.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 09:15</span>
-    Запись перехвата с полевого госпиталя.
-    <div class="dialogue"><span class="speaker">Врач:</span> «Доктор, они приходят в себя. Они синхронно открывают глаза. Одновременно. Все десять. Что за чёрт…»</div>
-</div>
-
-<div class="divider">* * *</div>
-
-<h2>Выводы</h2>
-<div class="conclusions">
-    <ol>
-        <li>Анализ крови нарушителей выявил микрочастицы металла, идентичного по составу металлу из A-006. Вероятность случайного совпадения — менее 0.01%.</li>
-        <li>В мозговой ткани зафиксирована активность, характерная для внешнего электронного управления.</li>
-        <li>Частота сердцебиения синхронизирована с точностью до 0.1 удара в минуту. Это невозможно для естественных биоритмов.</li>
-        <li><strong>Гипотеза:</strong> A-007 — результат биологической модификации с использованием технологии, не известной современной науке. Частицы металла — импланты для внешнего управления.</li>
-        <li><strong>Условия изоляции:</strong> Нарушители содержатся в индивидуальных боксах. Доступ только в биозащитных костюмах. Образцы направлены в спецлабораторию.</li>
-    </ol>
-</div>
-
-<h2>Эпилог</h2>
-<div class="epilogue">
-    В кармане одной из нарушителей нашли снимок. Ночное небо над Порт-Фрейзером. В центре — размытые огни, образующие неправильную геометрическую фигуру. На обороте надпись шариковой ручкой: <em>«Они смотрят. Всегда»</em>. Стоун держал этот снимок. Он смотрел на огни. Он не знал, что это, но он знал, что это связано с тем, что он видел сегодня. С пустыми глазами. С ритмичными шагами. С металлом в крови. Он сжал фотографию. Комкал её. Хотел выбросить. Но не смог. Он положил её в карман. Рядом с фотографией жены. Два лица теперь были вместе. Его жена и неизвестная женщина с пустыми глазами. Он вышел из кабинета. Он пошёл по коридору. Он остановился перед зеркалом. Он посмотрел на своё отражение. В его глазах была та же пустота, что и у нарушителей.
-
-    <div class="three-knocks">Тук. Тук. Тук.</div>
-
-    Он не стал зомби. Он перестал чувствовать. Пульс. Ритм, который он слышал в тот день, когда умирала его жена. Тишина.
-</div>
-
-<!-- ================================================================ -->
-<!-- 5. ГЛАВА 3. ГУЛ ПУСТОТЫ -->
-<!-- ================================================================ -->
-<div id="chapter3"></div>
-<div style="margin: 60px 0;"></div>
-<div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
-
-<h1>ГЛАВА 3: ГУЛ ПУСТОТЫ</h1>
-<div style="color: #666; font-size: 0.9em; margin-bottom: 20px;">Феномен A-008 | Классификация: Активный | Вектор: Энергетический, Псионический</div>
-
-<div class="epigraph">
-    «Я не хочу уходить.»
-    <div class="epigraph-author">— Пилот дрона Алекс, последние слова</div>
-</div>
-
-<div class="archive-note">
-    <strong>АРХИВНАЯ ВРЕЗКА</strong><br><br>
-    Спутниковая группировка «Горизонт-7» прекратила наблюдение за сектором 44.8°S, 72.3°W с 12.04.2247, 02:00 UCT. Причина не установлена. Координаты считаются потерянными. Ниже приведена расшифровка последней передачи, полученной от дрона «Стрекоза-7».
-    <div class="handwritten">[Приписка от руки: «Он знал, что не вернётся. Он хотел этого. — Д.»]</div>
-</div>
-
-<h2>Сводка данных</h2>
-<div class="summary-box">
-    <div class="summary-item"><span class="label">Номер феномена:</span> A-008</div>
-    <div class="summary-item"><span class="label">Кодовое название:</span> «Гул Пустоты»</div>
-    <div class="summary-item"><span class="label">Классификация:</span> <span class="classified">Активный</span></div>
-    <div class="summary-item"><span class="label">Вектор воздействия:</span> Энергетический, Псионический</div>
-    <div class="summary-item"><span class="label">Дата операции:</span> 11.04.2247</div>
-    <div class="summary-item"><span class="label">Оперативный сектор:</span> Хребет Теней, координаты 44.8°S, 72.3°W, высота 2980 м</div>
-    <div class="summary-item"><span class="label">Описание:</span> Металлическая структура, встроенная в скальный массив. Диаметр 60 см. Поверхность гладкая, тёмно-серая. Гравировки в виде круга, разделённого на 8 сегментов, с цифрой «7». Частота излучения: 17.5 Гц. Материал: титано-никелевый сплав с неизвестным элементом.</div>
-    <div class="summary-item"><span class="label">Подтверждённые инциденты:</span> 09.04 — пропажа геологической экспедиции (6 человек). 10.04 — обнаружение тел с повреждениями, несовместимыми с падением.</div>
-    <div class="summary-item"><span class="label">Актуальные угрозы:</span> Энергетическое воздействие (нарушение электроники), биологическое воздействие (головные боли, дезориентация, летальные исходы), автономная работа устройства.</div>
-</div>
-
-<h2>Журнал операции</h2>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 06:30</span>
-    Группа VRT-4 «Вихрь» выдвигается к координатам 44.8°S, 72.3°W. Командир группы — капитан Алекс Кортес.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 07:15</span>
-    Группа высаживается на высоте 2980 метров. На месте — спасатели, тела геологов, оборудование лагеря. Гул слышен сразу: низкая, вибрирующая нота, которая ощущается не столько ушами, сколько телом.
-    <div class="dialogue"><span class="speaker">Боец:</span> «Командир, я чувствую вибрацию. В груди. У вас тоже?»</div>
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 07:30</span>
-    Сканеры фиксируют источник сигнала. Он исходит из скального массива в 50 метрах от лагеря. Визуально невидим. Звук идёт изнутри горы.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 08:10</span>
-    Группа бурит скважину. На глубине 1.2 метра инструмент упирается в полость. Специалисты расширяют проход и обнаруживают устройство — металлический диск, встроенный в скалу. Без швов, без креплений. Как будто его поместили туда, и камень застыл вокруг.
-    <div class="dialogue"><span class="speaker">Боец:</span> «Оно… целое. И оно работает.»</div>
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 08:45</span>
-    При попытке извлечения устройства происходит резкий импульс. Все приборы в радиусе 500 метров отключаются на 4 секунды. Два оперативника падают на колени — кровь из носа, дезориентация. Через 10 минут состояние стабилизируется. Гул меняет тональность — становится глубже, тяжелее.
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 09:20</span>
-    Дистанционный манипулятор извлекает устройство. Группа фиксирует гравировки: последовательность символов, аналогичная обломкам A-006. Новая цифра — «7» вместо «4».
-</div>
-
-<div class="journal-entry">
-    <span class="timestamp">UCT 09:45</span>
-    Расшифровка данных передана в аналитический отдел. Установлено: устройство является ретранслятором. Оно не генерирует сигнал, а усиливает и передаёт его. Источник сигнала — за пределами зоны обнаружения.
-    <div style="margin-top: 10px;"><strong>Потери:</strong> 2 человека с временными симптомами.</div>
-</div>
-
-<div class="divider">* * *</div>
-
-<h2>Выводы</h2>
-<div class="conclusions">
-    <ol>
-        <li>Устройство не имеет внешнего питания, но сохраняет активность. Предположительно, использует неизвестный тип энергетического элемента, способный работать десятилетиями.</li>
-        <li>Частота излучения — 17.5 Гц. Идентична частоте A-006 и микрочастицам A-007.</li>
+  </head>
+  <body>
+    <!-- ================================================================ -->
+    <!-- ГРИФ И ОГЛАВЛЕНИЕ -->
+    <!-- ================================================================ -->
+    <div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+
+    <div class="toc">
+      <div class="toc-title">═════ СОДЕРЖАНИЕ ═════</div>
+      <ul>
+        <li>
+          <span class="num">00</span> <a href="#about">О проекте</a>
+          <span class="chapter-label">— введение</span>
+        </li>
+        <li>
+          <span class="num">01</span>
+          <a href="#prologue">Пролог. Мир Атлас-Прайм</a>
+          <span class="chapter-label">— вселенная</span>
+        </li>
+        <li>
+          <span class="num">02</span>
+          <a href="#chapter1">Глава 1. Молчаливый Полдень</a>
+          <span class="chapter-label">— A-006</span>
+        </li>
+        <li>
+          <span class="num">03</span>
+          <a href="#chapter2">Глава 2. Красный Прилив</a>
+          <span class="chapter-label">— A-007</span>
+        </li>
+        <li>
+          <span class="num">04</span>
+          <a href="#chapter3">Глава 3. Гул Пустоты</a>
+          <span class="chapter-label">— A-008</span>
+        </li>
+        <li>
+          <span class="num">05</span>
+          <a href="#chapter4">Глава 4. Железный Лес</a>
+          <span class="chapter-label">— A-009</span>
+        </li>
+        <li>
+          <span class="num">06</span>
+          <a href="#chapter5">Глава 5. Пустынный Глаз</a>
+          <span class="chapter-label">— A-010</span>
+        </li>
+        <li>
+          <span class="num">07</span> <a href="#rights">Авторство и права</a>
+          <span class="chapter-label">— копирайт</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- 1. О ПРОЕКТЕ -->
+    <!-- ================================================================ -->
+    <div id="about"></div>
+    <div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+
+    <h1>О ПРОЕКТЕ</h1>
+
+    <p><strong>Автор:</strong> SpaceRus</p>
+    <p>
+      <strong>Канал:</strong>
+      <a
+        href="https://www.youtube.com/@Space_Rus_240"
+        target="_blank"
+        style="color: #888; text-decoration: underline"
+        >www.youtube.com/@Space_Rus_240</a
+      >
+    </p>
+    <p>
+      <strong>Проект:</strong> Цикл рассказов «A.C.I. — Хроники Сдерживания»
+    </p>
+    <p><strong>Вселенная:</strong> «Атлас-Прайм» (оригинальный сеттинг)</p>
+
+    <p>
+      «A.C.I. — Хроники Сдерживания» — это серия отчётов секретного агентства,
+      которое расследует и изолирует феномены на планете Атлас-Прайм. Каждая
+      глава — одна операция. Один феномен. Один отчёт.
+    </p>
+
+    <p>
+      Стиль произведений сочетает в себе несколько направлений. Атмосфера взята
+      из мира «Метро 2033» — напряжённая, мрачная, создающая ощущение, что всё
+      описанное могло произойти на самом деле. Подача брифингов напоминает стиль
+      Ace Combat 7 — чёткая, сухая, по делу, без лишних эмоций. Документальная
+      эстетика подчёркивает реалистичность происходящего.
+    </p>
+
+    <div class="archive-note">
+      <strong>РАСПИСАНИЕ ПУБЛИКАЦИЙ</strong><br /><br />
+      <ul style="list-style: none; padding-left: 0">
+        <li style="margin-bottom: 8px">
+          <strong>Одна глава в неделю.</strong>
+        </li>
+        <li style="margin-bottom: 8px">
+          <strong>Объём:</strong> 1200–1800 слов.
+        </li>
+        <li style="margin-bottom: 8px">
+          <strong>Выход:</strong> каждый понедельник в 20:00 МСК.
+        </li>
+        <li style="margin-bottom: 8px">
+          <strong>Публикация:</strong> только в Telegram-канале автора.
+        </li>
+      </ul>
+      <p><strong>Старт проекта:</strong> 20 июля 2026 года.</p>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- 2. ПРОЛОГ. МИР АТЛАС-ПРАЙМ -->
+    <!-- ================================================================ -->
+    <div id="prologue"></div>
+    <div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+
+    <h1>ПРОЛОГ. МИР АТЛАС-ПРАЙМ</h1>
+
+    <p>
+      Атлас-Прайм — планета, на которой человечество построило свою цивилизацию,
+      но так и не научилось контролировать всё, что скрыто в её глубинах.
+      Диаметр мира составляет девятнадцать тысяч сто километров — в полтора раза
+      больше Земли. Гравитация здесь тяжелее, каждый шаг требует чуть больше
+      усилий, каждый полёт — чуть больше топлива. Восемь миллиардов двести
+      миллионов человек населяют четырнадцать республик, объединённых в
+      Федерацию Атласских Государств. Единое правительство располагается в
+      Порт-Атласе — городе-порте, ставшем политическим и экономическим центром
+      планеты.
+    </p>
+
+    <p>
+      Технологический уровень Атласа-Прайм — это мир, где ядерная энергетика
+      стала обыденностью, компактные термоядерные реакторы питают города и
+      корабли, авиация достигла предела своих возможностей, а космическая
+      программа вышла на орбиту и закрепилась там. Высокоманевренные истребители
+      с искусственным интеллектом патрулируют небо, дроны-камикадзе наносят
+      точечные удары, орбитальные платформы следят за поверхностью. Но за этим
+      фасадом прогресса скрывается то, что не вписывается в учебники физики и
+      инженерные расчёты.
+    </p>
+
+    <p>
+      Вооружённые силы планеты объединены под командованием Объединённого
+      Командования Атласа. Космическая программа развивается силами Атласской
+      космической инициативы. Постоянно действующая станция «Горизонт-7»
+      находится на орбите, база на спутнике Терра-2 уже работает, и в планах —
+      экспедиция к поясу астероидов. Человечество смотрит вверх, в звёзды, не
+      подозревая, что самые опасные угрозы прячутся не в космосе, а на своей
+      собственной планете.
+    </p>
+
+    <p>
+      Именно для работы с этими угрозами было создано агентство A.C.I. — Atlas
+      Control &amp; Isolation. Формально — научно-исследовательская структура
+      при Объединённом Командовании. Фактически — «тёмная рука» Федерации,
+      занимающаяся расследованием, сдерживанием и изоляцией феноменов, не
+      поддающихся объяснению с позиций современной науки. Агентство появилось
+      после катастрофы в секторе «Молчаливый Полдень». Что именно произошло —
+      засекречено. Известно лишь одно: после тех событий было принято решение,
+      что некоторые тайны не должны становиться достоянием общественности.
+    </p>
+
+    <p>
+      Принцип A.C.I. прост и жесток: «Лучше потерять миссию, чем потерять
+      контроль». Агенты работают в тени. Их отчёты никогда не попадают в
+      открытый доступ. Их потери никогда не озвучиваются официально. Они
+      существуют ровно до тех пор, пока нужны. И исчезают, когда становится
+      слишком поздно.
+    </p>
+
+    <div class="archive-note">
+      <strong>КЛАССИФИКАЦИЯ ФЕНОМЕНОВ (A.C.I.)</strong>
+      <ul style="list-style: none; padding-left: 0">
+        <li style="margin-top: 10px">
+          <strong>Пассивный</strong> — феномен не проявляет активности без
+          внешнего воздействия. Поведение стабильно. Может находиться под
+          наблюдением без немедленного вмешательства.
+        </li>
+        <li style="margin-top: 10px">
+          <strong>Активный</strong> — феномен проявляет целенаправленную
+          активность. Требует постоянного мониторинга и оперативного
+          реагирования.
+        </li>
+        <li style="margin-top: 10px">
+          <strong>Критический</strong> — феномен представляет непосредственную
+          угрозу для жизни и инфраструктуры. Требует немедленной изоляции или
+          нейтрализации.
+        </li>
+      </ul>
+    </div>
+
+    <div class="archive-note">
+      <strong>ВЕКТОРЫ ВОЗДЕЙСТВИЯ</strong>
+      <ul style="list-style: none; padding-left: 0">
+        <li style="margin-top: 10px">
+          <strong>Биологический</strong> — воздействие на живые организмы,
+          модификация тканей или поведения.
+        </li>
+        <li style="margin-top: 10px">
+          <strong>Механический</strong> — физическое воздействие на материю,
+          разрушение конструкций.
+        </li>
+        <li style="margin-top: 10px">
+          <strong>Энергетический</strong> — воздействие на электромагнитные
+          поля, сигналы, энергию.
+        </li>
+        <li style="margin-top: 10px">
+          <strong>Псионический</strong> — воздействие на сознание, восприятие,
+          поведение.
+        </li>
+      </ul>
+    </div>
+
+    <p>
+      Этот цикл — хроники работы агентства A.C.I. Каждая глава — отчёт об одной
+      операции. Один феномен. Одна команда. Один результат, который никогда не
+      будет обнародован. Только здесь, в этих записях, сохраняется правда о том,
+      что скрыто под поверхностью Атласа-Прайм.
+    </p>
+
+    <!-- ================================================================ -->
+    <!-- 3. ГЛАВА 1. МОЛЧАЛИВЫЙ ПОЛДЕНЬ -->
+    <!-- ================================================================ -->
+    <div id="chapter1"></div>
+    <div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+
+    <h1>ГЛАВА 1: МОЛЧАЛИВЫЙ ПОЛДЕНЬ</h1>
+    <div style="color: #666; font-size: 0.9em; margin-bottom: 20px">
+      Феномен A-006 | Классификация: Активный | Вектор: Механический,
+      Энергетический
+    </div>
+
+    <div class="epigraph">
+      «Я не знаю, как убить океан.»
+      <div class="epigraph-author">
+        — Капитан Маркус Рейнольдс, показания после операции
+      </div>
+    </div>
+
+    <div class="archive-note">
+      <strong>АРХИВНАЯ ВРЕЗКА</strong><br /><br />
+      Операция «Молчаливый Полдень» — первое задокументированное столкновение с
+      феноменом, позже получившим классификацию <strong>A-006</strong>.
+      Свидетельства собраны на основе показаний выживших, включая капитана
+      Маркуса Рейнольдса, который после операции был списан на берег по
+      психическому состоянию. Его показания считаются противоречивыми, однако их
+      содержание повторяется с пугающей точностью.
+      <div class="handwritten">
+        [Приписка от руки: «Считать данные ошибочными. Проверить повторно.
+        Подпись: [неразборчиво]».]
+      </div>
+    </div>
+
+    <h2>Сводка данных</h2>
+    <div class="summary-box">
+      <div class="summary-item">
+        <span class="label">Номер феномена:</span> A-006
+      </div>
+      <div class="summary-item">
+        <span class="label">Кодовое название:</span> «Карен»
+      </div>
+      <div class="summary-item">
+        <span class="label">Классификация:</span>
+        <span class="classified">Активный</span>
+      </div>
+      <div class="summary-item">
+        <span class="label">Вектор воздействия:</span> Механический,
+        Энергетический
+      </div>
+      <div class="summary-item">
+        <span class="label">Дата операции:</span> 27.03.2247
+      </div>
+      <div class="summary-item">
+        <span class="label">Оперативный сектор:</span> Океан Атласа-Прайм,
+        координаты 31.2°S, 89.4°W
+      </div>
+      <div class="summary-item">
+        <span class="label">Описание:</span> Механобиологическая структура
+        кальмароподобной морфологии. Размах щупалец — 45–60 м. Зона активности
+        фиксирована, глубина 80–120 м. Поведение циклично: периоды акустической
+        эмиссии сменяются тишиной.
+      </div>
+      <div class="summary-item">
+        <span class="label">Акустические характеристики:</span> Импульсы на
+        частоте 17.5 Гц с повторением 46.7 секунды. Магнитное поле искажено на
+        0.3% на дистанции 500 м. Гидролокация бесполезна — нулевая
+        эхо-сигнатура.
+      </div>
+      <div class="summary-item">
+        <span class="label">Подтверждённые инциденты:</span> 24.03 — потеря
+        контейнеровоза «Атлас Принцесс»; 25.03 — аномальное отклонение лайнера
+        «Арктика Эйр 77».
+      </div>
+      <div class="summary-item">
+        <span class="label">Актуальные угрозы:</span> Территориальность,
+        структурное воздействие, электромагнитное поле (радиус 1.5 км),
+        тактическая маскировка.
+      </div>
+    </div>
+
+    <h2>Журнал операции</h2>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 12:47</span>
+      Авианосец NAV-1 «Посейдон» занимает позицию в 12 км к северо-востоку от
+      цели. С палубы поднимаются два тяжёлых гидросамолёта AVL-2 «Альбатрос» и
+      один ударно-разведывательный вертолёт VRT-1 «Буревестник». Вода в квадрате
+      аномально спокойна. Полный штиль.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 12:50</span>
+      Старший акустик Кортес докладывает о низкочастотном гуле. Командир
+      Рейнольдс приказывает фиксировать.
+      <div class="dialogue">
+        <span class="speaker">Кортес:</span> «Я слышу его дыхание, Марк. За
+        десять минут до того, как оно поднялось. Я слышал, как оно дышит. Это не
+        эхо. Это не помехи. Это… дыхание.»
+      </div>
+      Рейнольдс знает, что Кортес прав. Он чувствует это кожей — тем местом, где
+      страх прячется от логики. Но он не может признать это. Потому что тогда
+      ему придётся остановить миссию. А за его спиной — приказ командования и
+      восемьсот человек на борту.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 13:05</span>
+      Пилот AVL-2 капитан Элена Восс докладывает о визуальном контакте. С высоты
+      600 метров она видит тень на дне. Приблизительно 55 метров в размахе.
+      Существо лежит на дне. Спокойно. Словно ждёт.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 13:20</span>
+      Сброшен подводный дрон. Он опускается на глубину 60 метров. Оптика
+      передаёт изображение: центральное тело около 8 метров в диаметре.
+      Металлическое. Чёрное. На поверхности — геометрические узоры. Щупальца
+      начинают шевелиться. Дрон останавливается в 15 метрах. Объект касается его
+      корпуса. Изучает. Затем — резкий рывок. Дрон раздавлен. Давление: 45
+      мегапаскалей за 0.3 секунды.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 13:27</span>
+      Капитан Восс запрашивает разрешение на сброс второго дрона. Рейнольдс
+      колеблется. Кортес предупреждает.
+      <div class="dialogue">
+        <span class="speaker">Кортес:</span> «Не подходи к ней близко. Я слышу,
+        как она считает. Три удара. Ритм. Она считает нас, Марк. Как овец перед
+        забоем.»
+      </div>
+      Рейнольдс отдаёт приказ. Он не может остановиться. Он уже потерял один
+      корабль — «Атлас Принцесс» пять лет назад. Тридцать погибших. Он не может
+      потерять этот. Он не может признать, что ошибается. Это решение ему
+      предстоит вспоминать до конца жизни. Восс улыбается в камеру. Это её
+      последняя улыбка.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 13:31</span>
+      Щупальце вырывается из воды. Скорость — 32 м/с. Высота — 120 метров. Оно
+      обвивает левое крыло AVL-2. Последнее сообщение Восс обрывается на
+      полуслове. Гидросамолёт падает с высоты 70 метров. Взрыв. Огненный шар.
+      Обломки погружаются.
+      <div style="margin-top: 10px">
+        <strong>Потери:</strong> один гидросамолёт AVL-2 «Феникс», два пилота.
+        Капитан Элена Восс и её второй пилот погибли.
+      </div>
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 14:10</span>
+      Объект уходит на глубину. Рейнольдс отдаёт приказ на отход. Кортес
+      записывает в журнал.
+      <div class="dialogue">
+        <span class="speaker">Кортес:</span> «Ритм не прервался. Три удара.
+        Пауза. Три удара. Даже когда оно уходит, оно продолжает считать. Оно
+        знает, что мы вернёмся.»
+      </div>
+    </div>
+
+    <div class="divider">* * *</div>
+
+    <h2>Выводы</h2>
+    <div class="conclusions">
+      <ol>
+        <li>
+          Анализ акустических импульсов выявил вторичную частоту — 23.8 Гц,
+          появляющуюся за 8.2 секунды до акта агрессии. Это может быть
+          предупреждением или активацией защитного механизма.
+        </li>
+        <li>
+          Металлическая структура состоит из титано-никелевого сплава с
+          вкраплениями неизвестного материала, отражающего рентгеновское
+          излучение почти на 100%. Технологии превосходят современные
+          разработки.
+        </li>
+        <li>
+          Поведение объекта не сводится к простой агрессии. Он изучает дрон. Он
+          уничтожил гидросамолёт, но не тронул авианосец. Это указывает на
+          интеллект и способность оценивать угрозу.
+        </li>
+        <li>
+          <strong>Гипотеза:</strong> A-006 является автоматизированной защитной
+          системой, предназначенной для охраны точки 31.2°S, 89.4°W.
+          Предположительно, эта точка скрывает вход в подводную структуру.
+        </li>
+        <li>
+          <strong>Условия изоляции:</strong> Установлен периметр контроля в 5
+          км. При активации объекта — немедленный отход на 10 км. Ежедневный
+          акустический мониторинг обязателен.
+        </li>
+      </ol>
+    </div>
+
+    <h2>Эпилог</h2>
+    <div class="epilogue">
+      Рейнольдс стоял у иллюминатора. В одной руке он держал фотографию погибших
+      с «Атлас Принцесс». Тридцать лиц, которые он помнил поимённо. Он положил
+      её на стол. Вода за стеклом была чёрной и неподвижной. Вода смотрела на
+      него. Он увидел своё отражение. За его плечом — тень. Светящаяся точка.
+      Та, что была у капсулы «Лемминг-9». Он не обернулся. Знал, что там никого
+      нет. Через неделю он подал рапорт об увольнении. Через месяц его списали
+      на берег. Через год он уехал в горы, где нет воды.
+
+      <div class="three-knocks">Тук. Тук. Тук.</div>
+
+      Говорят, он до сих пор смотрит на зеркала и видит там не только себя, но и
+      что-то ещё. Говорят, он до сих пор слышит ритм. Три удара. Тишина.
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- 4. ГЛАВА 2. КРАСНЫЙ ПРИЛИВ -->
+    <!-- ================================================================ -->
+    <div id="chapter2"></div>
+    <div style="margin: 60px 0"></div>
+    <div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+
+    <h1>ГЛАВА 2: КРАСНЫЙ ПРИЛИВ</h1>
+    <div style="color: #666; font-size: 0.9em; margin-bottom: 20px">
+      Феномен A-007 | Классификация: Активный | Вектор: Биологический,
+      Псионический
+    </div>
+
+    <div class="epigraph">
+      «Они не чувствуют боли, потому что боль — это сигнал об ошибке. А ошибок в
+      их конструкции просто нет.»
+      <div class="epigraph-author">— Доктор Е. Фридман, полевой дневник</div>
+    </div>
+
+    <div class="archive-note">
+      <strong>АРХИВНАЯ ВРЕЗКА</strong><br /><br />
+      Операция «Красный Прилив» — второе задокументированное столкновение с
+      феноменом сети A-006–A-010. Впервые зафиксировано биологическое
+      воздействие на людей. Материалы собраны на основе показаний капитана
+      Виктора Стоуна, после операции отстранённого от полевой работы.
+      <div class="handwritten">
+        [Приписка от руки: «Он видел её лицо. Он видел жену. — Д.»]
+      </div>
+    </div>
+
+    <h2>Сводка данных</h2>
+    <div class="summary-box">
+      <div class="summary-item">
+        <span class="label">Номер феномена:</span> A-007
+      </div>
+      <div class="summary-item">
+        <span class="label">Кодовое название:</span> «Красный Прилив»
+      </div>
+      <div class="summary-item">
+        <span class="label">Классификация:</span>
+        <span class="classified">Активный</span>
+      </div>
+      <div class="summary-item">
+        <span class="label">Вектор воздействия:</span> Биологический,
+        Псионический
+      </div>
+      <div class="summary-item">
+        <span class="label">Дата операции:</span> 04.04.2247
+      </div>
+      <div class="summary-item">
+        <span class="label">Оперативный сектор:</span> Порт-Фрейзер, координаты
+        12.4°S, 145.7°W
+      </div>
+      <div class="summary-item">
+        <span class="label">Описание:</span> Группа людей, подвергшихся
+        биологической модификации. Утрата болевой чувствительности, речи,
+        самостоятельности. Действия скоординированы, подчинены единой цели.
+        Температура тела: 39.2°C. Зрачковый рефлекс отсутствует. Частота шагов:
+        126 уд/мин.
+      </div>
+      <div class="summary-item">
+        <span class="label">Подтверждённые инциденты:</span> 04.04 — группа из
+        12 человек в рабочей одежде движется к складу боеприпасов «Форпост-7».
+      </div>
+      <div class="summary-item">
+        <span class="label">Актуальные угрозы:</span> Биологическое заражение,
+        координация (внешнее управление), целенаправленность действий,
+        отсутствие диалога.
+      </div>
+    </div>
+
+    <h2>Журнал операции</h2>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 04:47</span>
+      Поступило сообщение от береговой охраны Порт-Фрейзера. Группа из
+      двенадцати человек в рабочей одежде замечена движущейся вдоль пирса в
+      направлении склада «Форпост-7». Охрана склада запросила идентификацию.
+      Группа не ответила. При попытке остановить их — охрана была атакована.
+      Двое охранников госпитализированы с переломами и рваными ранами.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 06:30</span>
+      Капитан Виктор Стоун получает оперативный приказ: перехватить группу,
+      изолировать, сохранить биоматериал для анализа.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 08:30</span>
+      Группа GRD-3 «Молот» выдвигается на двух бронетранспортёрах к координатам
+      12.4°S, 145.7°W.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 08:42</span>
+      Визуальный контакт. Двенадцать человек движутся колонной по два человека.
+      Темп ровный, без остановок. Один из нарушителей несёт металлический прут.
+      Остальные без оружия. Стоун приказывает блокировать дорогу. Первый
+      бронетранспортёр выезжает перед колонной. Второй заходит с тыла.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 08:44</span>
+      Стоун выходит из машины. Он подходит к колонне. Он смотрит в их лица. Они
+      смотрят сквозь него.
+      <div class="dialogue">
+        <span class="speaker">Стоун:</span> «Группа, стоп. Вам приказано
+        остановиться. Вы находитесь в закрытой зоне. Немедленно прекратите
+        движение.»
+      </div>
+      Нарушители не останавливаются. Они продолжают двигаться, не меняя
+      скорости. Стоун замечает, что они не моргают. Их глаза открыты, но в них
+      нет жизни.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 08:45</span>
+      Приказ открыть предупредительный огонь в воздух. Два выстрела. Нарушители
+      не реагируют. Первый ряд колонны достигает бронетранспортёра. Нарушитель с
+      металлическим прутом ударяет по корпусу. Прут гнётся. Он продолжает бить,
+      пока кисть не ломается. Он не издаёт ни звука. Он продолжает наносить
+      удары сломанной рукой.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 08:47</span>
+      Стоун отдаёт приказ на силовое задержание. Группа выдвигается с щитами и
+      дубинками. Первый боец GRD-3, попытавшийся скрутить нарушителя, отброшен
+      ударом на 4 метра. Перелом ключицы и трёх рёбер. Нарушители не защищаются.
+      Они наступают. Стоун подходит к женщине с нарисованной улыбкой. Он
+      подносит руку к её лицу, чтобы проверить зрачки. Она ударяет его по тому
+      месту, где у него под броней находится сердце. Он падает на колени. Он не
+      может дышать. Он смотрит на неё снизу вверх. И на секунду он видит не её.
+      Он видит свою жену. В тот день. В больнице. Она смотрела на него и
+      говорила: «Не уходи». А он ушёл. Он не мог смотреть, как она умирает.
+      Теперь эта женщина стояла над ним. Она смотрела на него так же. Он не мог
+      отвести взгляд.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 08:48</span>
+      К нему подошёл гражданский — мужчина в оранжевой жилетке. Он смотрел на
+      тела. Он сказал тихо.
+      <div class="dialogue">
+        <span class="speaker">Гражданский:</span> «Они не виноваты, капитан. Они
+        просто хотели, чтобы их оставили в покое.»
+      </div>
+      Стоун смотрел на него. Он ничего не говорил. Гражданский ушёл. Стоун
+      остался один. Он крикнул.
+      <div class="dialogue">
+        <span class="speaker">Стоун:</span> «Огонь! Всем — огонь!»
+      </div>
+      Его голос сорвался. Это был не приказ. Это был крик отчаяния. Человека,
+      который больше не может смотреть на пустоту.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 08:52</span>
+      Группа применяет летальные средства. Выстрелы в конечности. Нарушители
+      падают, но продолжают ползти к складу. Они не издают ни звука. Они просто
+      двигаются к цели. Последняя из двенадцати — женщина с нарисованной улыбкой
+      — достигает бронетранспортёра. Она начинает биться головой о броню,
+      разбивая лицо. Она не останавливается, пока не теряет сознание.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 09:05</span>
+      Все двенадцать нарушителей обездвижены. Десять живы. Двое скончались.
+      Потери: 3 человека ранено, 1 тяжело. Нарушители: 2 погибших, 10
+      изолированы.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 09:15</span>
+      Запись перехвата с полевого госпиталя.
+      <div class="dialogue">
+        <span class="speaker">Врач:</span> «Доктор, они приходят в себя. Они
+        синхронно открывают глаза. Одновременно. Все десять. Что за чёрт…»
+      </div>
+    </div>
+
+    <div class="divider">* * *</div>
+
+    <h2>Выводы</h2>
+    <div class="conclusions">
+      <ol>
+        <li>
+          Анализ крови нарушителей выявил микрочастицы металла, идентичного по
+          составу металлу из A-006. Вероятность случайного совпадения — менее
+          0.01%.
+        </li>
+        <li>
+          В мозговой ткани зафиксирована активность, характерная для внешнего
+          электронного управления.
+        </li>
+        <li>
+          Частота сердцебиения синхронизирована с точностью до 0.1 удара в
+          минуту. Это невозможно для естественных биоритмов.
+        </li>
+        <li>
+          <strong>Гипотеза:</strong> A-007 — результат биологической модификации
+          с использованием технологии, не известной современной науке. Частицы
+          металла — импланты для внешнего управления.
+        </li>
+        <li>
+          <strong>Условия изоляции:</strong> Нарушители содержатся в
+          индивидуальных боксах. Доступ только в биозащитных костюмах. Образцы
+          направлены в спецлабораторию.
+        </li>
+      </ol>
+    </div>
+
+    <h2>Эпилог</h2>
+    <div class="epilogue">
+      В кармане одной из нарушителей нашли снимок. Ночное небо над
+      Порт-Фрейзером. В центре — размытые огни, образующие неправильную
+      геометрическую фигуру. На обороте надпись шариковой ручкой:
+      <em>«Они смотрят. Всегда»</em>. Стоун держал этот снимок. Он смотрел на
+      огни. Он не знал, что это, но он знал, что это связано с тем, что он видел
+      сегодня. С пустыми глазами. С ритмичными шагами. С металлом в крови. Он
+      сжал фотографию. Комкал её. Хотел выбросить. Но не смог. Он положил её в
+      карман. Рядом с фотографией жены. Два лица теперь были вместе. Его жена и
+      неизвестная женщина с пустыми глазами. Он вышел из кабинета. Он пошёл по
+      коридору. Он остановился перед зеркалом. Он посмотрел на своё отражение. В
+      его глазах была та же пустота, что и у нарушителей.
+
+      <div class="three-knocks">Тук. Тук. Тук.</div>
+
+      Он не стал зомби. Он перестал чувствовать. Пульс. Ритм, который он слышал
+      в тот день, когда умирала его жена. Тишина.
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- 5. ГЛАВА 3. ГУЛ ПУСТОТЫ -->
+    <!-- ================================================================ -->
+    <div id="chapter3"></div>
+    <div style="margin: 60px 0"></div>
+    <div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+
+    <h1>ГЛАВА 3: ГУЛ ПУСТОТЫ</h1>
+    <div style="color: #666; font-size: 0.9em; margin-bottom: 20px">
+      Феномен A-008 | Классификация: Активный | Вектор: Энергетический,
+      Псионический
+    </div>
+
+    <div class="epigraph">
+      «Я не хочу уходить.»
+      <div class="epigraph-author">— Пилот дрона Алекс, последние слова</div>
+    </div>
+
+    <div class="archive-note">
+      <strong>АРХИВНАЯ ВРЕЗКА</strong><br /><br />
+      Спутниковая группировка «Горизонт-7» прекратила наблюдение за сектором
+      44.8°S, 72.3°W с 12.04.2247, 02:00 UCT. Причина не установлена. Координаты
+      считаются потерянными. Ниже приведена расшифровка последней передачи,
+      полученной от дрона «Стрекоза-7».
+      <div class="handwritten">
+        [Приписка от руки: «Он знал, что не вернётся. Он хотел этого. — Д.»]
+      </div>
+    </div>
+
+    <h2>Сводка данных</h2>
+    <div class="summary-box">
+      <div class="summary-item">
+        <span class="label">Номер феномена:</span> A-008
+      </div>
+      <div class="summary-item">
+        <span class="label">Кодовое название:</span> «Гул Пустоты»
+      </div>
+      <div class="summary-item">
+        <span class="label">Классификация:</span>
+        <span class="classified">Активный</span>
+      </div>
+      <div class="summary-item">
+        <span class="label">Вектор воздействия:</span> Энергетический,
+        Псионический
+      </div>
+      <div class="summary-item">
+        <span class="label">Дата операции:</span> 11.04.2247
+      </div>
+      <div class="summary-item">
+        <span class="label">Оперативный сектор:</span> Хребет Теней, координаты
+        44.8°S, 72.3°W, высота 2980 м
+      </div>
+      <div class="summary-item">
+        <span class="label">Описание:</span> Металлическая структура, встроенная
+        в скальный массив. Диаметр 60 см. Поверхность гладкая, тёмно-серая.
+        Гравировки в виде круга, разделённого на 8 сегментов, с цифрой «7».
+        Частота излучения: 17.5 Гц. Материал: титано-никелевый сплав с
+        неизвестным элементом.
+      </div>
+      <div class="summary-item">
+        <span class="label">Подтверждённые инциденты:</span> 09.04 — пропажа
+        геологической экспедиции (6 человек). 10.04 — обнаружение тел с
+        повреждениями, несовместимыми с падением.
+      </div>
+      <div class="summary-item">
+        <span class="label">Актуальные угрозы:</span> Энергетическое воздействие
+        (нарушение электроники), биологическое воздействие (головные боли,
+        дезориентация, летальные исходы), автономная работа устройства.
+      </div>
+    </div>
+
+    <h2>Журнал операции</h2>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 06:30</span>
+      Группа VRT-4 «Вихрь» выдвигается к координатам 44.8°S, 72.3°W. Командир
+      группы — капитан Алекс Кортес.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 07:15</span>
+      Группа высаживается на высоте 2980 метров. На месте — спасатели, тела
+      геологов, оборудование лагеря. Гул слышен сразу: низкая, вибрирующая нота,
+      которая ощущается не столько ушами, сколько телом.
+      <div class="dialogue">
+        <span class="speaker">Боец:</span> «Командир, я чувствую вибрацию. В
+        груди. У вас тоже?»
+      </div>
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 07:30</span>
+      Сканеры фиксируют источник сигнала. Он исходит из скального массива в 50
+      метрах от лагеря. Визуально невидим. Звук идёт изнутри горы.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 08:10</span>
+      Группа бурит скважину. На глубине 1.2 метра инструмент упирается в
+      полость. Специалисты расширяют проход и обнаруживают устройство —
+      металлический диск, встроенный в скалу. Без швов, без креплений. Как будто
+      его поместили туда, и камень застыл вокруг.
+      <div class="dialogue">
+        <span class="speaker">Боец:</span> «Оно… целое. И оно работает.»
+      </div>
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 08:45</span>
+      При попытке извлечения устройства происходит резкий импульс. Все приборы в
+      радиусе 500 метров отключаются на 4 секунды. Два оперативника падают на
+      колени — кровь из носа, дезориентация. Через 10 минут состояние
+      стабилизируется. Гул меняет тональность — становится глубже, тяжелее.
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 09:20</span>
+      Дистанционный манипулятор извлекает устройство. Группа фиксирует
+      гравировки: последовательность символов, аналогичная обломкам A-006. Новая
+      цифра — «7» вместо «4».
+    </div>
+
+    <div class="journal-entry">
+      <span class="timestamp">UCT 09:45</span>
+      Расшифровка данных передана в аналитический отдел. Установлено: устройство
+      является ретранслятором. Оно не генерирует сигнал, а усиливает и передаёт
+      его. Источник сигнала — за пределами зоны обнаружения.
+      <div style="margin-top: 10px">
+        <strong>Потери:</strong> 2 человека с временными симптомами.
+      </div>
+    </div>
+
+    <div class="divider">* * *</div>
+
+    <h2>Выводы</h2>
+    <div class="conclusions">
+      <ol>
+        <li>
+          Устройство не имеет внешнего питания, но сохраняет активность.
+          Предположительно, использует неизвестный тип энергетического элемента,
+          способный работать десятилетиями.
+        </li>
+        <li>
+          Частота излучения — 17.5 Гц. Идентична частоте A-006 и микрочастицам
+          A-007.
+        </li>
         <li>Материал корпуса идентичен материалу обшивки A-006.</li>
-        <li>Устройство — ретранслятор. Оно усиливает и передаёт сигнал. Источник находится за пределами зоны обнаружения.</li>
-        <li><strong>Гипотеза:</strong> Устройство в Хребте Теней — часть сети, объединяющей океанский объект, модифицированных людей и неизвестный передатчик. Цифры «4» и «7» — вероятно, идентификаторы узлов сети.</li>
-        <li><strong>Условия изоляции:</strong> Устройство содержится в экранированном контейнере. Доступ только в защитных костюмах. Периодический мониторинг частоты.</li>
-    </ol>
-</div>
+        <li>
+          Устройство — ретранслятор. Оно усиливает и передаёт сигнал. Источник
+          находится за пределами зоны обнаружения.
+        </li>
+        <li>
+          <strong>Гипотеза:</strong> Устройство в Хребте Теней — часть сети,
+          объединяющей океанский объект, модифицированных людей и неизвестный
+          передатчик. Цифры «4» и «7» — вероятно, идентификаторы узлов сети.
+        </li>
+        <li>
+          <strong>Условия изоляции:</strong> Устройство содержится в
+          экранированном контейнере. Доступ только в защитных костюмах.
+          Периодический мониторинг частоты.
+        </li>
+      </ol>
+    </div>
 
-<h2>Эпилог</h2>
-<div class="epilogue">
-    Пилот дрона Алекс сидел в комнате перед вылетом. Он смотрел на фотографию сестры. Она пропала в этих горах пять лет назад. Её тело так и не нашли. Он стал пилотом дрона, чтобы летать туда, куда не могут добраться люди. Он хотел увидеть те места, где она была. Он хотел понять, что случилось. Он знал, что летит в то место, где она пропала. Его руки дрожали. Он сжимал кулон с её фотографией. «Это просто работа, — сказал он себе. — Это не связано с ней». Он уже был одержим до того, как увидел символы. Во время полёта он увидел их. Они двигались. Они показывали ему пустые города. И в них — лицо его сестры. Она улыбалась ему. Он знал, что это не она. Но он не мог отвести взгляд. «Я вижу её. Она здесь. Она всё время была здесь». Его голос сорвался. Он смотрел в экран. Лицо сестры становилось чётче. Он сказал тихо: «Я не хочу уходить». Станция потеряла сигнал. Алекс встал из кресла. Он подошёл к окну. Он смотрел на горы. Солнце садилось за хребет. Туда, где пропала его сестра. Он знал, что его больше нет. Он улыбался. Впервые за пять лет.
+    <h2>Эпилог</h2>
+    <div class="epilogue">
+      Пилот дрона Алекс сидел в комнате перед вылетом. Он смотрел на фотографию
+      сестры. Она пропала в этих горах пять лет назад. Её тело так и не нашли.
+      Он стал пилотом дрона, чтобы летать туда, куда не могут добраться люди. Он
+      хотел увидеть те места, где она была. Он хотел понять, что случилось. Он
+      знал, что летит в то место, где она пропала. Его руки дрожали. Он сжимал
+      кулон с её фотографией. «Это просто работа, — сказал он себе. — Это не
+      связано с ней». Он уже был одержим до того, как увидел символы. Во время
+      полёта он увидел их. Они двигались. Они показывали ему пустые города. И в
+      них — лицо его сестры. Она улыбалась ему. Он знал, что это не она. Но он
+      не мог отвести взгляд. «Я вижу её. Она здесь. Она всё время была здесь».
+      Его голос сорвался. Он смотрел в экран. Лицо сестры становилось чётче. Он
+      сказал тихо: «Я не хочу уходить». Станция потеряла сигнал. Алекс встал из
+      кресла. Он подошёл к окну. Он смотрел на горы. Солнце садилось за хребет.
+      Туда, где пропала его сестра. Он знал, что его больше нет. Он улыбался.
+      Впервые за пять лет.
 
-    <div class="three-knocks">Тук. Тук. Тук.</div>
+      <div class="three-knocks">Тук. Тук. Тук.</div>
 
-    Его тело так и не нашли. Как и его сестру. Тишина. Как будто мир задержал дыхание.
-</div>
+      Его тело так и не нашли. Как и его сестру. Тишина. Как будто мир задержал
+      дыхание.
+    </div>
 
-<!-- ================================================================ -->
-<!-- 6. ГЛАВА 4. ЖЕЛЕЗНЫЙ ЛЕС -->
-<!-- ================================================================ -->
-<div id="chapter4"></div>
-<div style="margin: 60px 0;"></div>
-<div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+    <!-- ================================================================ -->
+    <!-- 6. ГЛАВА 4. ЖЕЛЕЗНЫЙ ЛЕС -->
+    <!-- ================================================================ -->
+    <div id="chapter4"></div>
+    <div style="margin: 60px 0"></div>
+    <div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
 
-<h1>ГЛАВА 4: ЖЕЛЕЗНЫЙ ЛЕС</h1>
-<div style="color: #666; font-size: 0.9em; margin-bottom: 20px;">Феномен A-009 | Классификация: Активный | Вектор: Псионический, Энергетический</div>
+    <h1>ГЛАВА 4: ЖЕЛЕЗНЫЙ ЛЕС</h1>
+    <div style="color: #666; font-size: 0.9em; margin-bottom: 20px">
+      Феномен A-009 | Классификация: Активный | Вектор: Псионический,
+      Энергетический
+    </div>
 
-<div class="epigraph">
-    «Я слышу вас.»
-    <div class="epigraph-author">— Майор Е.С. Соколова, GRD-2, перед спуском в узел A-009</div>
-</div>
+    <div class="epigraph">
+      «Я слышу вас.»
+      <div class="epigraph-author">
+        — Майор Е.С. Соколова, GRD-2, перед спуском в узел A-009
+      </div>
+    </div>
 
-<div class="archive-note">
-    <strong>АРХИВНАЯ ВРЕЗКА</strong><br><br>
-    Документ восстановлен из частично повреждённого архива сектора «Железный Лес». Оригинал содержит 47 страниц. Рассекречено по приказу Директората A.C.I. №009/42. Геодезические данные проверены и подтверждены. Карта сети приложена отдельно (Приложение 4-C).
-    <div class="handwritten">[Приписка от руки: «Она знала. Ещё до спуска. — Д.»]</div>
-</div>
+    <div class="archive-note">
+      <strong>АРХИВНАЯ ВРЕЗКА</strong><br /><br />
+      Документ восстановлен из частично повреждённого архива сектора «Железный
+      Лес». Оригинал содержит 47 страниц. Рассекречено по приказу Директората
+      A.C.I. №009/42. Геодезические данные проверены и подтверждены. Карта сети
+      приложена отдельно (Приложение 4-C).
+      <div class="handwritten">
+        [Приписка от руки: «Она знала. Ещё до спуска. — Д.»]
+      </div>
+    </div>
 
-<h2>Сводка данных</h2>
-<div class="summary-box">
-    <div class="summary-item"><span class="label">Номер феномена:</span> A-009</div>
-    <div class="summary-item"><span class="label">Кодовое название:</span> «Железный Лес»</div>
-    <div class="summary-item"><span class="label">Классификация:</span> <span class="classified">Активный</span></div>
-    <div class="summary-item"><span class="label">Вектор воздействия:</span> Псионический, Энергетический</div>
-    <div class="summary-item"><span class="label">Дата обнаружения:</span> 14.03.2247</div>
-    <div class="summary-item"><span class="label">Координаты:</span> 47°12'33"S, 128°44'17"W (Республика Вердан, континент Эйр)</div>
-    <div class="summary-item"><span class="label">Описание:</span> Сеть из 144 металлических стержней из титано-никелевого сплава (с примесью неизвестного элемента), высотой 15–20 м, диаметром 0.8 м, расположенных на площади 2.3 км². Стержни наклонены под углом 17.5° к вертикали. Между ними регистрируется электромагнитное поле частотой 17.5 Гц.</div>
-    <div class="summary-item"><span class="label">Подтверждённые инциденты:</span> Потеря радиосвязи в радиусе 400 м; галлюцинации у 60% персонала; самопроизвольная активация электроники; обнаружение подземного комплекса глубиной 120 м.</div>
-    <div class="summary-item"><span class="label">Актуальные угрозы:</span> Псионическое воздействие на персонал. Возможная активация узла. Неизвестная целевая функция комплекса.</div>
-</div>
+    <h2>Сводка данных</h2>
+    <div class="summary-box">
+      <div class="summary-item">
+        <span class="label">Номер феномена:</span> A-009
+      </div>
+      <div class="summary-item">
+        <span class="label">Кодовое название:</span> «Железный Лес»
+      </div>
+      <div class="summary-item">
+        <span class="label">Классификация:</span>
+        <span class="classified">Активный</span>
+      </div>
+      <div class="summary-item">
+        <span class="label">Вектор воздействия:</span> Псионический,
+        Энергетический
+      </div>
+      <div class="summary-item">
+        <span class="label">Дата обнаружения:</span> 14.03.2247
+      </div>
+      <div class="summary-item">
+        <span class="label">Координаты:</span> 47°12'33"S, 128°44'17"W
+        (Республика Вердан, континент Эйр)
+      </div>
+      <div class="summary-item">
+        <span class="label">Описание:</span> Сеть из 144 металлических стержней
+        из титано-никелевого сплава (с примесью неизвестного элемента), высотой
+        15–20 м, диаметром 0.8 м, расположенных на площади 2.3 км². Стержни
+        наклонены под углом 17.5° к вертикали. Между ними регистрируется
+        электромагнитное поле частотой 17.5 Гц.
+      </div>
+      <div class="summary-item">
+        <span class="label">Подтверждённые инциденты:</span> Потеря радиосвязи в
+        радиусе 400 м; галлюцинации у 60% персонала; самопроизвольная активация
+        электроники; обнаружение подземного комплекса глубиной 120 м.
+      </div>
+      <div class="summary-item">
+        <span class="label">Актуальные угрозы:</span> Псионическое воздействие
+        на персонал. Возможная активация узла. Неизвестная целевая функция
+        комплекса.
+      </div>
+    </div>
 
-<h2>Журнал операции</h2>
+    <h2>Журнал операции</h2>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 06:14</span>
-    Группа GRD-2 «Клин» (7 человек) под командованием майора Соколовой прибыла в зону A-009. Погода: пасмурно, туман. Видимость 30 м. Температура: +8°C. Первичный осмотр периметра выявил отсутствие фауны в радиусе 800 м от центра сети. Птицы не поют.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 06:14</span>
+      Группа GRD-2 «Клин» (7 человек) под командованием майора Соколовой прибыла
+      в зону A-009. Погода: пасмурно, туман. Видимость 30 м. Температура: +8°C.
+      Первичный осмотр периметра выявил отсутствие фауны в радиусе 800 м от
+      центра сети. Птицы не поют.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 06:23</span>
-    Лейтенант Коваль, оператор георадара, зафиксировал аномальные отражения на глубине 117–124 м.
-    <div class="dialogue"><span class="speaker">Коваль:</span> «Там пустота, майор. Регулярная. Как будто кто-то выдолбил геометрию под корнями.»</div>
-    Соколова не ответила. Она подошла к ближайшему стержню. На высоте 1.7 м от основания, на матовой поверхности сплава, была выгравирована цифра <strong>«9»</strong>. Ширина гравировки — 12 см. Глубина — 3 мм. Следов термической обработки не обнаружено.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 06:23</span>
+      Лейтенант Коваль, оператор георадара, зафиксировал аномальные отражения на
+      глубине 117–124 м.
+      <div class="dialogue">
+        <span class="speaker">Коваль:</span> «Там пустота, майор. Регулярная.
+        Как будто кто-то выдолбил геометрию под корнями.»
+      </div>
+      Соколова не ответила. Она подошла к ближайшему стержню. На высоте 1.7 м от
+      основания, на матовой поверхности сплава, была выгравирована цифра
+      <strong>«9»</strong>. Ширина гравировки — 12 см. Глубина — 3 мм. Следов
+      термической обработки не обнаружено.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 06:31</span>
-    Установлен периметр наблюдения. Сержант Векслер докладывал о головокружении у двух бойцов — рядовых Тарнова и Фишера. Оба провели у стержня 11 минут.
-    <div class="dialogue"><span class="speaker">Соколова:</span> «Ротация каждые пятнадцать минут. Никто не работает больше четверти часа у стержня. Это приказ.»</div>
-    Векслер кивнул. Соколова повернулась к шахте. Её рука дрогнула при проверке карабина — на долю секунды. Никто не заметил.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 06:31</span>
+      Установлен периметр наблюдения. Сержант Векслер докладывал о
+      головокружении у двух бойцов — рядовых Тарнова и Фишера. Оба провели у
+      стержня 11 минут.
+      <div class="dialogue">
+        <span class="speaker">Соколова:</span> «Ротация каждые пятнадцать минут.
+        Никто не работает больше четверти часа у стержня. Это приказ.»
+      </div>
+      Векслер кивнул. Соколова повернулась к шахте. Её рука дрогнула при
+      проверке карабина — на долю секунды. Никто не заметил.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 06:45</span>
-    Обнаружен вход в подземный комплекс — вертикальная шахта диаметром 2.1 м, облицованная тем же титано-никелевым сплавом. Внутри — спиральная лестница с шагом 25 см. Коваль оторвал взгляд от экрана георадара.
-    <div class="dialogue"><span class="speaker">Коваль:</span> «Майор, георадар показывает линии. Они соединяют все стержни. Это не лес. Это схема.»</div>
-    <div class="dialogue"><span class="speaker">Соколова:</span> «Схема чего?»</div>
-    <div class="dialogue"><span class="speaker">Коваль:</span> «Не знаю. Но она огромная.»</div>
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 06:45</span>
+      Обнаружен вход в подземный комплекс — вертикальная шахта диаметром 2.1 м,
+      облицованная тем же титано-никелевым сплавом. Внутри — спиральная лестница
+      с шагом 25 см. Коваль оторвал взгляд от экрана георадара.
+      <div class="dialogue">
+        <span class="speaker">Коваль:</span> «Майор, георадар показывает линии.
+        Они соединяют все стержни. Это не лес. Это схема.»
+      </div>
+      <div class="dialogue">
+        <span class="speaker">Соколова:</span> «Схема чего?»
+      </div>
+      <div class="dialogue">
+        <span class="speaker">Коваль:</span> «Не знаю. Но она огромная.»
+      </div>
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 07:02</span>
-    Спуск. Соколова — первая. Глубина 40 м: воздух в пределах нормы. Глубина 80 м: регистрируется гул, не связанный с вентиляцией. Частота гула — <strong>17.5 Гц</strong>. В наушниках радиостанции — мёртвая тишина. Соколова остановилась на пролёте. Потерла виски. Гул проходил не через уши. Он шёл костями. Она почувствовала это — и узнала. Тот же ритм. Тот же голос. Она слышала его в «Северной-4», когда вентиляция открылась и они начали кричать. Она закрыла глаза. И гул стих — не потому что он исчез. Потому что она научилась не слышать.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 07:02</span>
+      Спуск. Соколова — первая. Глубина 40 м: воздух в пределах нормы. Глубина
+      80 м: регистрируется гул, не связанный с вентиляцией. Частота гула —
+      <strong>17.5 Гц</strong>. В наушниках радиостанции — мёртвая тишина.
+      Соколова остановилась на пролёте. Потерла виски. Гул проходил не через
+      уши. Он шёл костями. Она почувствовала это — и узнала. Тот же ритм. Тот же
+      голос. Она слышала его в «Северной-4», когда вентиляция открылась и они
+      начали кричать. Она закрыла глаза. И гул стих — не потому что он исчез.
+      Потому что она научилась не слышать.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 07:18</span>
-    Уровень B-4. Площадка диаметром 12 м. Стены — гладкие, без следов инструментов. На них — гравировки. Цифры: <strong>«4»</strong>, <strong>«7»</strong>, <strong>«8»</strong>, <strong>«9»</strong>. Рядом с каждой — координаты. Соколова приблизила фонарь к стене. Её лицо не изменилось.
-    <div class="dialogue"><span class="speaker">Соколова:</span> «31.2°S, 89.4°W. Молчаливый Полдень. Точка из доклада NAV-1.»</div>
-    Коваль побледнел. Пальцы его скользнули по экрану георадара.
-    <div class="dialogue"><span class="speaker">Коваль:</span> «Майор, здесь все точки. Все наши операции.»</div>
-    Соколова молчала. Она смотрела на цифру <strong>«7»</strong> и координаты 9°S, 112°W. Красный Прилив. Затем на <strong>«8»</strong> — 52°S, 134°W. Гул Пустоты. Она знала эти цифры. Она знала их, ещё до спуска.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 07:18</span>
+      Уровень B-4. Площадка диаметром 12 м. Стены — гладкие, без следов
+      инструментов. На них — гравировки. Цифры: <strong>«4»</strong>,
+      <strong>«7»</strong>, <strong>«8»</strong>, <strong>«9»</strong>. Рядом с
+      каждой — координаты. Соколова приблизила фонарь к стене. Её лицо не
+      изменилось.
+      <div class="dialogue">
+        <span class="speaker">Соколова:</span> «31.2°S, 89.4°W. Молчаливый
+        Полдень. Точка из доклада NAV-1.»
+      </div>
+      Коваль побледнел. Пальцы его скользнули по экрану георадара.
+      <div class="dialogue">
+        <span class="speaker">Коваль:</span> «Майор, здесь все точки. Все наши
+        операции.»
+      </div>
+      Соколова молчала. Она смотрела на цифру <strong>«7»</strong> и координаты
+      9°S, 112°W. Красный Прилив. Затем на <strong>«8»</strong> — 52°S, 134°W.
+      Гул Пустоты. Она знала эти цифры. Она знала их, ещё до спуска.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 07:24</span>
-    Обнаружена центральная камера. Сфера диаметром 3 м, подвешенная на четырёх стержнях из сплава. На поверхности сферы — проекция. Карта Атлас-Прайма. Точки свечения: океан, порт, горы, лес. Между ними — линии. Сеть. Соколова сделала шаг вперёд. Её рука потянулась к сфере, словно по чужой воле.
-    <div class="dialogue"><span class="speaker">Коваль:</span> «Майор, не стоит. Мы не знаем, что это.»</div>
-    <div class="dialogue"><span class="speaker">Соколова:</span> «Я знаю. Это карта. И мы на ней.»</div>
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 07:24</span>
+      Обнаружена центральная камера. Сфера диаметром 3 м, подвешенная на четырёх
+      стержнях из сплава. На поверхности сферы — проекция. Карта Атлас-Прайма.
+      Точки свечения: океан, порт, горы, лес. Между ними — линии. Сеть. Соколова
+      сделала шаг вперёд. Её рука потянулась к сфере, словно по чужой воле.
+      <div class="dialogue">
+        <span class="speaker">Коваль:</span> «Майор, не стоит. Мы не знаем, что
+        это.»
+      </div>
+      <div class="dialogue">
+        <span class="speaker">Соколова:</span> «Я знаю. Это карта. И мы на ней.»
+      </div>
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 07:29</span>
-    Сфера активировалась при приближении Соколовой на расстояние 1.2 м. Освещение в камере сменилось на красное (длина волны ~650 нм). Гул усилился. Коваль упал на колени, обхватив голову.
-    <div class="dialogue"><span class="speaker">Коваль:</span> «Я слышу их. Они считают. Они считают нас.»</div>
-    Соколова не отступила. На сфере появилась новая точка — мигающая, рядом с их местоположением. Под ней цифра <strong>«10»</strong>. Рядом — координаты, которых не было в архивах A.C.I. Соколова запомнила их. Она не знала зачем. Но запомнила.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 07:29</span>
+      Сфера активировалась при приближении Соколовой на расстояние 1.2 м.
+      Освещение в камере сменилось на красное (длина волны ~650 нм). Гул
+      усилился. Коваль упал на колени, обхватив голову.
+      <div class="dialogue">
+        <span class="speaker">Коваль:</span> «Я слышу их. Они считают. Они
+        считают нас.»
+      </div>
+      Соколова не отступила. На сфере появилась новая точка — мигающая, рядом с
+      их местоположением. Под ней цифра <strong>«10»</strong>. Рядом —
+      координаты, которых не было в архивах A.C.I. Соколова запомнила их. Она не
+      знала зачем. Но запомнила.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 07:31</span>
-    Коваль поднялся. Зрачки расширены до предела. Голос — монотонный, без интонаций.
-    <div class="dialogue"><span class="speaker">Коваль:</span> «Нужно включить её. Майор, мы должны включить её. Это ключ. Это ответ.»</div>
-    Он бросился к панели на сфере. Руки его двигались уверенно, словно он знал, куда нажимать. Соколова схватила его за запястье. Кость хрустнула.
-    <div class="dialogue"><span class="speaker">Соколова:</span> «Лейтенант. Стоять.»</div>
-    <div class="dialogue"><span class="speaker">Коваль:</span> «Вы не понимаете! Шахта "Северная-4" — это было не случайно! Они знали, что вы придёте! Они ждали вас!»</div>
-    Соколова ударила его прикладом виском. Коваль рухнул. Сфера погасла. В камере воцарилась тьма, нарушаемая только дрожащим светом фонарей.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 07:31</span>
+      Коваль поднялся. Зрачки расширены до предела. Голос — монотонный, без
+      интонаций.
+      <div class="dialogue">
+        <span class="speaker">Коваль:</span> «Нужно включить её. Майор, мы
+        должны включить её. Это ключ. Это ответ.»
+      </div>
+      Он бросился к панели на сфере. Руки его двигались уверенно, словно он
+      знал, куда нажимать. Соколова схватила его за запястье. Кость хрустнула.
+      <div class="dialogue">
+        <span class="speaker">Соколова:</span> «Лейтенант. Стоять.»
+      </div>
+      <div class="dialogue">
+        <span class="speaker">Коваль:</span> «Вы не понимаете! Шахта
+        "Северная-4" — это было не случайно! Они знали, что вы придёте! Они
+        ждали вас!»
+      </div>
+      Соколова ударила его прикладом виском. Коваль рухнул. Сфера погасла. В
+      камере воцарилась тьма, нарушаемая только дрожащим светом фонарей.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 07:33</span>
-    Эвакуация. Коваль в наручниках, ведомый Векслером. Соколова — последняя. Перед подъёмом она оглянулась. В темноте камеры, в отражении матовой сферы, она увидела себя. За её плечом — светящаяся точка, там, где должно было быть сердце. Она не двигалась. Точка пульсировала в такт гулу. <strong>17.5 Гц.</strong>
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 07:33</span>
+      Эвакуация. Коваль в наручниках, ведомый Векслером. Соколова — последняя.
+      Перед подъёмом она оглянулась. В темноте камеры, в отражении матовой
+      сферы, она увидела себя. За её плечом — светящаяся точка, там, где должно
+      было быть сердце. Она не двигалась. Точка пульсировала в такт гулу.
+      <strong>17.5 Гц.</strong>
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 07:55</span>
-    Выход на поверхность. Радиосвязь восстановлена в 07:48. Коваль помещён в медблок. Диагноз: острое психотическое расстройство, индуцированное внешним воздействием. Прогноз: неблагоприятный. Соколова сидела у входа в шахту. В правой руке — обломок сплава с цифрой «9», отколотый ещё на уровне B-4. В левой — зажигалка. Она курила. Нарушение регламента. Никто не осмелился сделать замечание.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 07:55</span>
+      Выход на поверхность. Радиосвязь восстановлена в 07:48. Коваль помещён в
+      медблок. Диагноз: острое психотическое расстройство, индуцированное
+      внешним воздействием. Прогноз: неблагоприятный. Соколова сидела у входа в
+      шахту. В правой руке — обломок сплава с цифрой «9», отколотый ещё на
+      уровне B-4. В левой — зажигалка. Она курила. Нарушение регламента. Никто
+      не осмелился сделать замечание.
+    </div>
 
-<div class="divider">* * *</div>
+    <div class="divider">* * *</div>
 
-<h2>Выводы</h2>
-<div class="conclusions">
-    <ol>
-        <li>A-009 является <strong>узлом сети</strong>, объединяющей все задокументированные феномены (A-006–A-009) и, предположительно, ещё не обнаруженные объекты. Линии на карте указывают на глобальную инфраструктуру неизвестного происхождения.</li>
-        <li>Центральная сфера содержит проекцию глобальной карты с координатами, совпадающими с точками проявления феноменов. Наличие мигающей точки «10» указывает на грядущую активацию следующего узла. Координаты переданы в Директорат (Приложение 4-C).</li>
-        <li>Материал стержней идентичен образцам, извлечённым из A-006, A-007, A-008. Присутствует неизвестный элемент, отсутствующий в периодической таблице Атлас-Прайм. Сплав демонстрирует стойкость к термическому и механическому воздействию.</li>
-        <li>Частота <strong>17.5 Гц</strong> является несущей для псионического воздействия. Лейтенант Коваль продемонстрировал классическую картину индуцированной веры — субъект воспринимает активацию узла как «ответ» или «ключ», теряя критическое мышление.</li>
-        <li>Майор Соколова продемонстрировала аномальную устойчивость к псионическому воздействию. Причины неизвестны. <strong>Рекомендуется изучение её медицинского досье (ссылка: дело «Северная-4»).</strong></li>
-        <li>Узел A-009 переведён в режим пассивного наблюдения. Вход в подземный комплекс заминирован. Дальнейшее исследование требует санкции Директората.</li>
-    </ol>
-</div>
+    <h2>Выводы</h2>
+    <div class="conclusions">
+      <ol>
+        <li>
+          A-009 является <strong>узлом сети</strong>, объединяющей все
+          задокументированные феномены (A-006–A-009) и, предположительно, ещё не
+          обнаруженные объекты. Линии на карте указывают на глобальную
+          инфраструктуру неизвестного происхождения.
+        </li>
+        <li>
+          Центральная сфера содержит проекцию глобальной карты с координатами,
+          совпадающими с точками проявления феноменов. Наличие мигающей точки
+          «10» указывает на грядущую активацию следующего узла. Координаты
+          переданы в Директорат (Приложение 4-C).
+        </li>
+        <li>
+          Материал стержней идентичен образцам, извлечённым из A-006, A-007,
+          A-008. Присутствует неизвестный элемент, отсутствующий в периодической
+          таблице Атлас-Прайм. Сплав демонстрирует стойкость к термическому и
+          механическому воздействию.
+        </li>
+        <li>
+          Частота <strong>17.5 Гц</strong> является несущей для псионического
+          воздействия. Лейтенант Коваль продемонстрировал классическую картину
+          индуцированной веры — субъект воспринимает активацию узла как «ответ»
+          или «ключ», теряя критическое мышление.
+        </li>
+        <li>
+          Майор Соколова продемонстрировала аномальную устойчивость к
+          псионическому воздействию. Причины неизвестны.
+          <strong
+            >Рекомендуется изучение её медицинского досье (ссылка: дело
+            «Северная-4»).</strong
+          >
+        </li>
+        <li>
+          Узел A-009 переведён в режим пассивного наблюдения. Вход в подземный
+          комплекс заминирован. Дальнейшее исследование требует санкции
+          Директората.
+        </li>
+      </ol>
+    </div>
 
-<h2>Эпилог</h2>
-<div class="epilogue">
-    Майор Соколова стояла перед зеркалом в казарме сектора «Вердан-7». Сняла куртку. На шее — тонкий шрам от осколка в шахте «Северная-4». Три года. Семнадцать человек. Она посмотрела в зеркало. В отражении, за её плечом, мелькнула светящаяся точка. Она не обернулась. Знала: если обернётся — там будет только стена. Она открыла ящик стола. Достала старый план эвакуации «Северной-4». На нём — её подпись под приказом об открытии вентиляции. Семнадцать подписей погибших ниже. Она поднесла зажигалку к бумаге.
+    <h2>Эпилог</h2>
+    <div class="epilogue">
+      Майор Соколова стояла перед зеркалом в казарме сектора «Вердан-7». Сняла
+      куртку. На шее — тонкий шрам от осколка в шахте «Северная-4». Три года.
+      Семнадцать человек. Она посмотрела в зеркало. В отражении, за её плечом,
+      мелькнула светящаяся точка. Она не обернулась. Знала: если обернётся — там
+      будет только стена. Она открыла ящик стола. Достала старый план эвакуации
+      «Северной-4». На нём — её подпись под приказом об открытии вентиляции.
+      Семнадцать подписей погибших ниже. Она поднесла зажигалку к бумаге.
 
-    <div class="three-knocks">Тук. Тук. Тук.</div>
+      <div class="three-knocks">Тук. Тук. Тук.</div>
 
-    Пламя поглотило план. Соколова смотрела, как чёрный дым поднимался к потолку. В дыму — цифры. <strong>«4».</strong> <strong>«7».</strong> <strong>«9».</strong> <strong>«10».</strong> Она не знала, слышит ли их кто-то ещё. Но теперь знала точно: шахта «Северная-4» была не аварией. Это была проба. Первая проба. И она прошла её.
+      Пламя поглотило план. Соколова смотрела, как чёрный дым поднимался к
+      потолку. В дыму — цифры. <strong>«4».</strong> <strong>«7».</strong>
+      <strong>«9».</strong> <strong>«10».</strong> Она не знала, слышит ли их
+      кто-то ещё. Но теперь знала точно: шахта «Северная-4» была не аварией. Это
+      была проба. Первая проба. И она прошла её.
 
-    <div class="three-knocks">Тук. Тук. Тук.</div>
-</div>
+      <div class="three-knocks">Тук. Тук. Тук.</div>
+    </div>
 
-<!-- ================================================================ -->
-<!-- 7. ГЛАВА 5. ПУСТЫННЫЙ ГЛАЗ -->
-<!-- ================================================================ -->
-<div id="chapter5"></div>
-<div style="margin: 60px 0;"></div>
-<div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+    <!-- ================================================================ -->
+    <!-- 7. ГЛАВА 5. ПУСТЫННЫЙ ГЛАЗ -->
+    <!-- ================================================================ -->
+    <div id="chapter5"></div>
+    <div style="margin: 60px 0"></div>
+    <div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
 
-<h1>ГЛАВА 5: ПУСТЫННЫЙ ГЛАЗ</h1>
-<div style="color: #666; font-size: 0.9em; margin-bottom: 20px;">Феномен A-010 | Классификация: Активный | Вектор: Механический, Энергетический</div>
+    <h1>ГЛАВА 5: ПУСТЫННЫЙ ГЛАЗ</h1>
+    <div style="color: #666; font-size: 0.9em; margin-bottom: 20px">
+      Феномен A-010 | Классификация: Активный | Вектор: Механический,
+      Энергетический
+    </div>
 
-<div class="epigraph">
-    «Я пришёл искать ответы. Но здесь только вопросы, которые задают слишком поздно.»
-    <div class="epigraph-author">— Доктор Э. Ванн, геолог, перед входом в модуль A-010</div>
-</div>
+    <div class="epigraph">
+      «Я пришёл искать ответы. Но здесь только вопросы, которые задают слишком
+      поздно.»
+      <div class="epigraph-author">
+        — Доктор Э. Ванн, геолог, перед входом в модуль A-010
+      </div>
+    </div>
 
-<div class="archive-note">
-    <strong>АРХИВНАЯ ВРЕЗКА</strong><br><br>
-    Документ составлен на основе полевых записей геологической экспедиции A.C.I., прерванной 02.07.2247. Оригинальный журнал Ванна частично утерян. Восстановлено из резервного чипа броневика WHL-7. Приложение 5-A: фотоматериалы сплавов. Приложение 5-B: расшифровка экранных данных. Приложение 5-C: пластины из боковой камеры модуля.
-    <div class="handwritten">[Приписка от руки: «Он знал, куда идёт. За три дня до обнаружения модуля он изменил маршрут. Не объяснил почему. — Д.»]</div>
-</div>
+    <div class="archive-note">
+      <strong>АРХИВНАЯ ВРЕЗКА</strong><br /><br />
+      Документ составлен на основе полевых записей геологической экспедиции
+      A.C.I., прерванной 02.07.2247. Оригинальный журнал Ванна частично утерян.
+      Восстановлено из резервного чипа броневика WHL-7. Приложение 5-A:
+      фотоматериалы сплавов. Приложение 5-B: расшифровка экранных данных.
+      Приложение 5-C: пластины из боковой камеры модуля.
+      <div class="handwritten">
+        [Приписка от руки: «Он знал, куда идёт. За три дня до обнаружения модуля
+        он изменил маршрут. Не объяснил почему. — Д.»]
+      </div>
+    </div>
 
-<h2>Сводка данных</h2>
-<div class="summary-box">
-    <div class="summary-item"><span class="label">Номер феномена:</span> A-010</div>
-    <div class="summary-item"><span class="label">Кодовое название:</span> «Пустынный Глаз»</div>
-    <div class="summary-item"><span class="label">Классификация:</span> <span class="classified">Активный</span></div>
-    <div class="summary-item"><span class="label">Вектор воздействия:</span> Механический, Энергетический</div>
-    <div class="summary-item"><span class="label">Дата обнаружения:</span> 02.07.2247</div>
-    <div class="summary-item"><span class="label">Координаты:</span> 33°20'14"N, 112°44'08"E (Республика Каирн, пустыня Эйрос)</div>
-    <div class="summary-item"><span class="label">Описание:</span> Полуразрушенный подземный модуль диаметром 45 м, обнаруженный на глубине 12 м под слоем петрифицированного песка. Внутренние помещения содержат механизмы неизвестного назначения, работающие на частоте 17.5 Гц. Центральный аппарат демонстрирует признаки недавней активности. Материал обшивки — титано-никелевый сплав с примесью неизвестного элемента.</div>
-    <div class="summary-item"><span class="label">Подтверждённые инциденты:</span> Обвал грунта при бурении (погиб 1 человек — геолог Ю. Ковалёв); самопроизвольная активация бурового оборудования в радиусе 200 м; регистрация теплового излучения из модуля за 72 часа до обнаружения.</div>
-    <div class="summary-item"><span class="label">Актуальные угрозы:</span> Неизвестная функция механизмов. Возможность продолжения активности. Неизвестный статус «Узла 10». Неидентифицированные лица на архивных материалах модуля.</div>
-</div>
+    <h2>Сводка данных</h2>
+    <div class="summary-box">
+      <div class="summary-item">
+        <span class="label">Номер феномена:</span> A-010
+      </div>
+      <div class="summary-item">
+        <span class="label">Кодовое название:</span> «Пустынный Глаз»
+      </div>
+      <div class="summary-item">
+        <span class="label">Классификация:</span>
+        <span class="classified">Активный</span>
+      </div>
+      <div class="summary-item">
+        <span class="label">Вектор воздействия:</span> Механический,
+        Энергетический
+      </div>
+      <div class="summary-item">
+        <span class="label">Дата обнаружения:</span> 02.07.2247
+      </div>
+      <div class="summary-item">
+        <span class="label">Координаты:</span> 33°20'14"N, 112°44'08"E
+        (Республика Каирн, пустыня Эйрос)
+      </div>
+      <div class="summary-item">
+        <span class="label">Описание:</span> Полуразрушенный подземный модуль
+        диаметром 45 м, обнаруженный на глубине 12 м под слоем
+        петрифицированного песка. Внутренние помещения содержат механизмы
+        неизвестного назначения, работающие на частоте 17.5 Гц. Центральный
+        аппарат демонстрирует признаки недавней активности. Материал обшивки —
+        титано-никелевый сплав с примесью неизвестного элемента.
+      </div>
+      <div class="summary-item">
+        <span class="label">Подтверждённые инциденты:</span> Обвал грунта при
+        бурении (погиб 1 человек — геолог Ю. Ковалёв); самопроизвольная
+        активация бурового оборудования в радиусе 200 м; регистрация теплового
+        излучения из модуля за 72 часа до обнаружения.
+      </div>
+      <div class="summary-item">
+        <span class="label">Актуальные угрозы:</span> Неизвестная функция
+        механизмов. Возможность продолжения активности. Неизвестный статус «Узла
+        10». Неидентифицированные лица на архивных материалах модуля.
+      </div>
+    </div>
 
-<h2>Журнал операции</h2>
+    <h2>Журнал операции</h2>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 04:30</span>
-    Экспедиция WHL-7 (4 человека: доктор Ванн, геолог Ковалёв, техник Моро, водитель Ганс) прибыла в сектор Эйрос-12. Температура: +47°C. Ветер 15 м/с. Видимость ограничена песчаными вихрями. Цель: взятие проб глубинных пород по маршруту, утверждённому A.C.I. 28.06.2247.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 04:30</span>
+      Экспедиция WHL-7 (4 человека: доктор Ванн, геолог Ковалёв, техник Моро,
+      водитель Ганс) прибыла в сектор Эйрос-12. Температура: +47°C. Ветер 15
+      м/с. Видимость ограничена песчаными вихрями. Цель: взятие проб глубинных
+      пород по маршруту, утверждённому A.C.I. 28.06.2247.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 04:47</span>
-    Ковалёв зафиксировал аномалию при геологическом бурении. На глубине 9 м — плотность грунта резко изменилась. Не порода. Металл.
-    <div class="dialogue"><span class="speaker">Ковалёв:</span> «Эрик, здесь что-то под нами. Не природное.»</div>
-    Ванн подошёл к буровой установке. Скважина выдала стружку. Серебристая. Матовая. Та же, что в образцах из архива A.C.I.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 04:47</span>
+      Ковалёв зафиксировал аномалию при геологическом бурении. На глубине 9 м —
+      плотность грунта резко изменилась. Не порода. Металл.
+      <div class="dialogue">
+        <span class="speaker">Ковалёв:</span> «Эрик, здесь что-то под нами. Не
+        природное.»
+      </div>
+      Ванн подошёл к буровой установке. Скважина выдала стружку. Серебристая.
+      Матовая. Та же, что в образцах из архива A.C.I.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 04:52</span>
-    Обвал. Скважина обрушилась. Ковалёв не успел отойти. Песок поглотил его по пояс, затем по грудь. Ванн бросился к нему. Моро кричал, чтобы он отошёл.
-    <div class="dialogue"><span class="speaker">Ковалёв:</span> «Тяните! Тяните, чёрт возьми!»</div>
-    Ванн ухватился за его руку. Песок тянул вниз. Сила была неправильной — не тяжесть, а втягивание. Как будто под ними был вентилятор. Ковалёв посмотрел на Ванна. В его глазах не было паники. Было удивление.
-    <div class="dialogue"><span class="speaker">Ковалёв:</span> «Там внизу… что-то дышит.»</div>
-    Рука вырвалась. Песок замкнулся.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 04:52</span>
+      Обвал. Скважина обрушилась. Ковалёв не успел отойти. Песок поглотил его по
+      пояс, затем по грудь. Ванн бросился к нему. Моро кричал, чтобы он отошёл.
+      <div class="dialogue">
+        <span class="speaker">Ковалёв:</span> «Тяните! Тяните, чёрт возьми!»
+      </div>
+      Ванн ухватился за его руку. Песок тянул вниз. Сила была неправильной — не
+      тяжесть, а втягивание. Как будто под ними был вентилятор. Ковалёв
+      посмотрел на Ванна. В его глазах не было паники. Было удивление.
+      <div class="dialogue">
+        <span class="speaker">Ковалёв:</span> «Там внизу… что-то дышит.»
+      </div>
+      Рука вырвалась. Песок замкнулся.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 05:15</span>
-    Ковалёв погиб. Тело не извлечено. Глубина засыпи — 14 м. Ванн сидел у края воронки. Моро пытался подать ему воду. Ванн не брал.
-    <div class="dialogue"><span class="speaker">Ванн:</span> «Он сказал "дышит".»</div>
-    <div class="dialogue"><span class="speaker">Моро:</span> «Доктор, это шок. Он не мог…»</div>
-    <div class="dialogue"><span class="speaker">Ванн:</span> «Он не шутил.»</div>
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 05:15</span>
+      Ковалёв погиб. Тело не извлечено. Глубина засыпи — 14 м. Ванн сидел у края
+      воронки. Моро пытался подать ему воду. Ванн не брал.
+      <div class="dialogue">
+        <span class="speaker">Ванн:</span> «Он сказал "дышит".»
+      </div>
+      <div class="dialogue">
+        <span class="speaker">Моро:</span> «Доктор, это шок. Он не мог…»
+      </div>
+      <div class="dialogue">
+        <span class="speaker">Ванн:</span> «Он не шутил.»
+      </div>
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 06:00</span>
-    Ванн отдал приказ продолжить бурение в 50 м от точки обвала. Против регламента. Протокол A.C.I. требует эвакуации при гибели персонала. Ванн проигнорировал.
-    <div class="dialogue"><span class="speaker">Моро:</span> «Эрик, мы должны вызвать GRD. Это не наше.»</div>
-    <div class="dialogue"><span class="speaker">Ванн:</span> «Я вызову. После того, как узнаю, что это.»</div>
-    Моро молчал. Он видел, как Ванн смотрел на воронку. Не как на могилу. Как на дверь.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 06:00</span>
+      Ванн отдал приказ продолжить бурение в 50 м от точки обвала. Против
+      регламента. Протокол A.C.I. требует эвакуации при гибели персонала. Ванн
+      проигнорировал.
+      <div class="dialogue">
+        <span class="speaker">Моро:</span> «Эрик, мы должны вызвать GRD. Это не
+        наше.»
+      </div>
+      <div class="dialogue">
+        <span class="speaker">Ванн:</span> «Я вызову. После того, как узнаю, что
+        это.»
+      </div>
+      Моро молчал. Он видел, как Ванн смотрел на воронку. Не как на могилу. Как
+      на дверь.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 08:33</span>
-    Ручное раскопание воронки. На глубине 12 м — плоскость. Гладкая. Металлическая. Скруглённые края. Диаметр — не менее 40 м. Ванн очистил участок 2×2 м. На металле — гравировка. Цифра «9». Рядом — «10». Незавершённая. Края гравировки «10» были рваными, словно работа прервалась.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 08:33</span>
+      Ручное раскопание воронки. На глубине 12 м — плоскость. Гладкая.
+      Металлическая. Скруглённые края. Диаметр — не менее 40 м. Ванн очистил
+      участок 2×2 м. На металле — гравировка. Цифра «9». Рядом — «10».
+      Незавершённая. Края гравировки «10» были рваными, словно работа
+      прервалась.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 09:12</span>
-    Обнаружен люк. Диаметр 1.2 м. Открывается внутрь. Внутри — лестница. Спуск. Ванн спустился первым. Моро и Ганс — следом. Фонари осветили коридор. Стены — сплав. Пол — тёплый. Температура внутри: +28°C. Снаружи: +47°C.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 09:12</span>
+      Обнаружен люк. Диаметр 1.2 м. Открывается внутрь. Внутри — лестница.
+      Спуск. Ванн спустился первым. Моро и Ганс — следом. Фонари осветили
+      коридор. Стены — сплав. Пол — тёплый. Температура внутри: +28°C. Снаружи:
+      +47°C.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 09:25</span>
-    Центральный зал. Диаметр 12 м. В центре — аппарат, напоминающий вертикальный токарный станок. На нём — полуформированный стержень. Диаметр 0.8 м. Материал: титано-никелевый сплав. Стержень наклонён под углом 17.5°. Незавершён. На торце — цифра «10», выгравирована наполовину. Ванн подошёл ближе. Станок был активен. Вибрация проходила через подошвы. Частота: 17.5 Гц.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 09:25</span>
+      Центральный зал. Диаметр 12 м. В центре — аппарат, напоминающий
+      вертикальный токарный станок. На нём — полуформированный стержень. Диаметр
+      0.8 м. Материал: титано-никелевый сплав. Стержень наклонён под углом
+      17.5°. Незавершён. На торце — цифра «10», выгравирована наполовину. Ванн
+      подошёл ближе. Станок был активен. Вибрация проходила через подошвы.
+      Частота: 17.5 Гц.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 09:31</span>
-    Моро обнаружил экран на стене. Жидкокристаллический. Разрешение низкое, но символы читаемы. Верхняя строка: «УЗЕЛ 9/144 — ЗАВЕРШЁН». Средняя строка: «УЗЕЛ 10/144 — ОЖИДАНИЕ СУБСТРАТА». Нижняя строка: «КООРДИНАТЫ: [ДАННЫЕ УДАЛЕНЫ]».
-    <div class="dialogue"><span class="speaker">Моро:</span> «Что такое субстрат?»</div>
-    Ванн не ответил. Он смотрел на полуформированный стержень. На его торце — цифра «10». Неполная. Как будто кто-то начал писать и остановился. Или как будто ждал продолжения.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 09:31</span>
+      Моро обнаружил экран на стене. Жидкокристаллический. Разрешение низкое, но
+      символы читаемы. Верхняя строка: «УЗЕЛ 9/144 — ЗАВЕРШЁН». Средняя строка:
+      «УЗЕЛ 10/144 — ОЖИДАНИЕ СУБСТРАТА». Нижняя строка: «КООРДИНАТЫ: [ДАННЫЕ
+      УДАЛЕНЫ]».
+      <div class="dialogue">
+        <span class="speaker">Моро:</span> «Что такое субстрат?»
+      </div>
+      Ванн не ответил. Он смотрел на полуформированный стержень. На его торце —
+      цифра «10». Неполная. Как будто кто-то начал писать и остановился. Или как
+      будто ждал продолжения.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 09:33</span>
-    Ванн обошёл станок. На внутренней стене зала — панель. Не металлическая. Пластик. Старого образца. За ней — проём. Ванн приподнял панель. За ней — боковая камера. Размером 3×4 м. В ней — стеллажи. На стеллажах — металлические пластины. Тонкие. Гравированные. Ванн взял первую. Схема. Планетарная. 144 точки. Соединены линиями. В центре — узел без номера. Рядом — надпись: «УЗЕЛ 144 — ЗАВЕРШАЮЩИЙ. КООРДИНАТЫ: [НЕИЗВЕСТНЫ]». Внизу — пометка: «АКТИВАЦИЯ ПРИ ЗАВЕРШЕНИИ ВСЕХ ПРЕДШЕСТВУЮЩИХ». Ванн положил пластину. Взял вторую. На ней — фотография. Не цифровая. Химическая. Чёрно-белая. Человек в белом халате. Лицо размыто — повреждение пластины. Рядом с ним — модуль. Не разрушенный. Новый. Светлый. В руке у человека — планшет. На экране планшета — цифра «7». Под фотографией — гравировка: «ПЕРВЫЙ ЗАПУСК. 2231. СУБСТРАТ №7». Ванн перевернул пластину. На обороте — список. Номера. От 1 до 12. Рядом с номерами — пометки. Часть размыта. Рядом с №7 — имя. Начиналось на «Р…». Конец стёрт. Рядом с №9 — пусто. Рядом с №10 — пусто. И — пометка рядом с №144: «ОЖИДАЕТСЯ».
-    <div class="dialogue"><span class="speaker">Моро:</span> «Эрик, что там?»</div>
-    Ванн не обернулся. Он смотрел на фотографию. На белый халат. На цифру «7». На дату. 2231 год. За шестнадцать лет до основания A.C.I. За двадцать три года до его собственного рождения.
-    <div class="dialogue"><span class="speaker">Ванн:</span> «Здесь кто-то работал.»</div>
-    <div class="dialogue"><span class="speaker">Моро:</span> «Кто?»</div>
-    <div class="dialogue"><span class="speaker">Ванн:</span> «Я не знаю. Но они вели учёт.»</div>
-    Он положил пластину обратно. Взял третью. Чертеж. Сечение модуля. Подпись: «ФАБРИКАЦИОННЫЙ БЛОК ТИПА "ГЛАЗ". ПРОИЗВОДСТВЕННЫЙ ЦИКЛ: 144 ЕДИНИЦЫ. СТАТУС: АКТИВЕН». Ванн сложил пластины. Его руки не дрожали. Он уже прошёл через потерю Ковалёва. Теперь он чувствовал не ужас. Он чувствовал опоздание. Это не руины. Это цех. И цех работал по графику.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 09:33</span>
+      Ванн обошёл станок. На внутренней стене зала — панель. Не металлическая.
+      Пластик. Старого образца. За ней — проём. Ванн приподнял панель. За ней —
+      боковая камера. Размером 3×4 м. В ней — стеллажи. На стеллажах —
+      металлические пластины. Тонкие. Гравированные. Ванн взял первую. Схема.
+      Планетарная. 144 точки. Соединены линиями. В центре — узел без номера.
+      Рядом — надпись: «УЗЕЛ 144 — ЗАВЕРШАЮЩИЙ. КООРДИНАТЫ: [НЕИЗВЕСТНЫ]». Внизу
+      — пометка: «АКТИВАЦИЯ ПРИ ЗАВЕРШЕНИИ ВСЕХ ПРЕДШЕСТВУЮЩИХ». Ванн положил
+      пластину. Взял вторую. На ней — фотография. Не цифровая. Химическая.
+      Чёрно-белая. Человек в белом халате. Лицо размыто — повреждение пластины.
+      Рядом с ним — модуль. Не разрушенный. Новый. Светлый. В руке у человека —
+      планшет. На экране планшета — цифра «7». Под фотографией — гравировка:
+      «ПЕРВЫЙ ЗАПУСК. 2231. СУБСТРАТ №7». Ванн перевернул пластину. На обороте —
+      список. Номера. От 1 до 12. Рядом с номерами — пометки. Часть размыта.
+      Рядом с №7 — имя. Начиналось на «Р…». Конец стёрт. Рядом с №9 — пусто.
+      Рядом с №10 — пусто. И — пометка рядом с №144: «ОЖИДАЕТСЯ».
+      <div class="dialogue">
+        <span class="speaker">Моро:</span> «Эрик, что там?»
+      </div>
+      Ванн не обернулся. Он смотрел на фотографию. На белый халат. На цифру «7».
+      На дату. 2231 год. За шестнадцать лет до основания A.C.I. За двадцать три
+      года до его собственного рождения.
+      <div class="dialogue">
+        <span class="speaker">Ванн:</span> «Здесь кто-то работал.»
+      </div>
+      <div class="dialogue"><span class="speaker">Моро:</span> «Кто?»</div>
+      <div class="dialogue">
+        <span class="speaker">Ванн:</span> «Я не знаю. Но они вели учёт.»
+      </div>
+      Он положил пластину обратно. Взял третью. Чертеж. Сечение модуля. Подпись:
+      «ФАБРИКАЦИОННЫЙ БЛОК ТИПА "ГЛАЗ". ПРОИЗВОДСТВЕННЫЙ ЦИКЛ: 144 ЕДИНИЦЫ.
+      СТАТУС: АКТИВЕН». Ванн сложил пластины. Его руки не дрожали. Он уже прошёл
+      через потерю Ковалёва. Теперь он чувствовал не ужас. Он чувствовал
+      опоздание. Это не руины. Это цех. И цех работал по графику.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 09:38</span>
-    Ганс заметил движение. В дальнем конце зала — резервуар. Прозрачный. Внутри жидкость. Мутная. В ней — обломки. Кости. Не человеческие. Слишком длинные. Слишком много суставов. И — фрагмент ткани. Форма A.C.I. Старого образца. Датирован 2244 годом. Ванн приблизился. На фрагменте — нашивка. «СЕВЕРНАЯ-4».
-    <div class="dialogue"><span class="speaker">Моро:</span> «Это же…»</div>
-    <div class="dialogue"><span class="speaker">Ванн:</span> «Молчи.»</div>
-    Он не хотел слышать. Он уже знал.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 09:38</span>
+      Ганс заметил движение. В дальнем конце зала — резервуар. Прозрачный.
+      Внутри жидкость. Мутная. В ней — обломки. Кости. Не человеческие. Слишком
+      длинные. Слишком много суставов. И — фрагмент ткани. Форма A.C.I. Старого
+      образца. Датирован 2244 годом. Ванн приблизился. На фрагменте — нашивка.
+      «СЕВЕРНАЯ-4».
+      <div class="dialogue"><span class="speaker">Моро:</span> «Это же…»</div>
+      <div class="dialogue"><span class="speaker">Ванн:</span> «Молчи.»</div>
+      Он не хотел слышать. Он уже знал.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 09:45</span>
-    Станок активировался. Не от прикосновения. От присутствия. Пол под ногами Ванна задрожал усиленно. Экран мигнул. Строка изменилась: «УЗЕЛ 10/144 — СУБСТРАТ ОБНАРУЖЕН». Затем: «ИНИЦИАЛИЗАЦИЯ».
-    <div class="dialogue"><span class="speaker">Моро:</span> «Нам нужно уходить. Сейчас.»</div>
-    Ванн стоял у станка. Стержень медленно поворачивался. Угол наклона — 17.5°. Точно такой же, как в «Железном Лесе». Точно такой же, как в докладе Соколовой, который Ванн читал три недели назад в архиве A.C.I. Он понял. Это не древность. Это не руины. Это фабрика. И она работает.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 09:45</span>
+      Станок активировался. Не от прикосновения. От присутствия. Пол под ногами
+      Ванна задрожал усиленно. Экран мигнул. Строка изменилась: «УЗЕЛ 10/144 —
+      СУБСТРАТ ОБНАРУЖЕН». Затем: «ИНИЦИАЛИЗАЦИЯ».
+      <div class="dialogue">
+        <span class="speaker">Моро:</span> «Нам нужно уходить. Сейчас.»
+      </div>
+      Ванн стоял у станка. Стержень медленно поворачивался. Угол наклона —
+      17.5°. Точно такой же, как в «Железном Лесе». Точно такой же, как в
+      докладе Соколовой, который Ванн читал три недели назад в архиве A.C.I. Он
+      понял. Это не древность. Это не руины. Это фабрика. И она работает.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 09:47</span>
-    Эвакуация. Ванн — последний. Перед выходом он оглянулся. Экран погас. Но в темноте зала, в отражении стекла резервуара, он увидел себя. За его спиной — светящаяся точка. Там, где должен был стоять Ковалёв. Точка пульсировала. 17.5 Гц. Ванн не обернулся.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 09:47</span>
+      Эвакуация. Ванн — последний. Перед выходом он оглянулся. Экран погас. Но в
+      темноте зала, в отражении стекла резервуара, он увидел себя. За его спиной
+      — светящаяся точка. Там, где должен был стоять Ковалёв. Точка
+      пульсировала. 17.5 Гц. Ванн не обернулся.
+    </div>
 
-<div class="journal-entry">
-    <span class="timestamp">UCT 10:15</span>
-    Выход на поверхность. Радиосвязь восстановлена. Ванн передал координаты в A.C.I. С просьбой о немедленной эвакуации. И о бомбардировке.
-    <div class="dialogue"><span class="speaker">Моро:</span> «Вы хотите уничтожить это?»</div>
-    <div class="dialogue"><span class="speaker">Ванн:</span> «Я хочу остановить стройку.»</div>
-    <div class="dialogue"><span class="speaker">Моро:</span> «А Ковалёв?»</div>
-    Ванн молчал. Он смотрел на воронку. Теперь он знал: Ковалёв не утонул в песке. Его втянуло. Модуль втянул его как субстрат. Но что-то пошло не так. Или субстрат не подошёл. Или Ковалёв был только черновиком. Как Соколова в «Северной-4». Как все они.
-</div>
+    <div class="journal-entry">
+      <span class="timestamp">UCT 10:15</span>
+      Выход на поверхность. Радиосвязь восстановлена. Ванн передал координаты в
+      A.C.I. С просьбой о немедленной эвакуации. И о бомбардировке.
+      <div class="dialogue">
+        <span class="speaker">Моро:</span> «Вы хотите уничтожить это?»
+      </div>
+      <div class="dialogue">
+        <span class="speaker">Ванн:</span> «Я хочу остановить стройку.»
+      </div>
+      <div class="dialogue">
+        <span class="speaker">Моро:</span> «А Ковалёв?»
+      </div>
+      Ванн молчал. Он смотрел на воронку. Теперь он знал: Ковалёв не утонул в
+      песке. Его втянуло. Модуль втянул его как субстрат. Но что-то пошло не
+      так. Или субстрат не подошёл. Или Ковалёв был только черновиком. Как
+      Соколова в «Северной-4». Как все они.
+    </div>
 
-<div class="divider">* * *</div>
+    <div class="divider">* * *</div>
 
-<h2>Выводы</h2>
-<div class="conclusions">
-    <ol>
-        <li>A-010 представляет собой производственный модуль, предназначенный для создания узлов сети, идентичных A-009. Материал, конфигурация и частота (17.5 Гц) полностью совпадают с параметрами «Железного Леса».</li>
-        <li>Модуль находится в активном состоянии. Процесс формирования Узла 10 был прерван. Причина прерывания неизвестна. Возможно, отсутствие «субстрата». Термин требует расшифровки. Предположительно, «субстрат» — биологический материал, необходимый для завершения узла.</li>
-        <li>В резервуаре обнаружены биологические остатки и фрагмент формы A.C.I. образца 2244 года с нашивкой «СЕВЕРНАЯ-4». Прямая связь с инцидентом в шахте «Северная-4» (Глава 4) не доказана, но вероятна. Рекомендуется срочная сверка с делом майора Соколовой.</li>
-        <li>В боковой камере обнаружены архивные пластины: планетарная схема сети из 144 узлов (Узел 144 помечен как «ЗАВЕРШАЮЩИЙ»); фотография неидентифицированного лица в белом халате с датой «2231» и пометкой «СУБСТРАТ №7»; чертеж модуля с указанием «ФАБРИКАЦИОННЫЙ БЛОК ТИПА "ГЛАЗ"». Дата 2231 год предшествует основанию A.C.I. на 16 лет. Происхождение пластин и личность «Субстрата №7» не установлены.</li>
-        <li>Модуль демонстрирует признаки автономной работы. Неизвестно, кем и когда запущен. Неизвестно количество аналогичных модулей. Если данные на экране точны, сеть должна содержать 144 узла. Задокументировано: 9. Остальные: 135.</li>
-        <li>Доктор Ванн потребовал бомбардировки сектора. Запрос отклонён Директоратом. Сектор взят под наблюдение NAV-3. Дальнейшее исследование требует санкции высшего уровня.</li>
-    </ol>
-</div>
+    <h2>Выводы</h2>
+    <div class="conclusions">
+      <ol>
+        <li>
+          A-010 представляет собой производственный модуль, предназначенный для
+          создания узлов сети, идентичных A-009. Материал, конфигурация и
+          частота (17.5 Гц) полностью совпадают с параметрами «Железного Леса».
+        </li>
+        <li>
+          Модуль находится в активном состоянии. Процесс формирования Узла 10
+          был прерван. Причина прерывания неизвестна. Возможно, отсутствие
+          «субстрата». Термин требует расшифровки. Предположительно, «субстрат»
+          — биологический материал, необходимый для завершения узла.
+        </li>
+        <li>
+          В резервуаре обнаружены биологические остатки и фрагмент формы A.C.I.
+          образца 2244 года с нашивкой «СЕВЕРНАЯ-4». Прямая связь с инцидентом в
+          шахте «Северная-4» (Глава 4) не доказана, но вероятна. Рекомендуется
+          срочная сверка с делом майора Соколовой.
+        </li>
+        <li>
+          В боковой камере обнаружены архивные пластины: планетарная схема сети
+          из 144 узлов (Узел 144 помечен как «ЗАВЕРШАЮЩИЙ»); фотография
+          неидентифицированного лица в белом халате с датой «2231» и пометкой
+          «СУБСТРАТ №7»; чертеж модуля с указанием «ФАБРИКАЦИОННЫЙ БЛОК ТИПА
+          "ГЛАЗ"». Дата 2231 год предшествует основанию A.C.I. на 16 лет.
+          Происхождение пластин и личность «Субстрата №7» не установлены.
+        </li>
+        <li>
+          Модуль демонстрирует признаки автономной работы. Неизвестно, кем и
+          когда запущен. Неизвестно количество аналогичных модулей. Если данные
+          на экране точны, сеть должна содержать 144 узла. Задокументировано: 9.
+          Остальные: 135.
+        </li>
+        <li>
+          Доктор Ванн потребовал бомбардировки сектора. Запрос отклонён
+          Директоратом. Сектор взят под наблюдение NAV-3. Дальнейшее
+          исследование требует санкции высшего уровня.
+        </li>
+      </ol>
+    </div>
 
-<h2>Эпилог</h2>
-<div class="epilogue">
-    Доктор Ванн сидел в каюте броневика WHL-7. Моро спал в койке ниже, храпел. Ванн держал в руках старую карту — ту, по которой они шли к Эйрос-12. На ней, за три дня до обнаружения модуля, он нарисовал крест. Точно в том месте, где потом оказался модуль. Он не помнил, когда рисовал. Он не помнил, почему изменил маршрут. Он поднёс карту к лампе.
+    <h2>Эпилог</h2>
+    <div class="epilogue">
+      Доктор Ванн сидел в каюте броневика WHL-7. Моро спал в койке ниже, храпел.
+      Ванн держал в руках старую карту — ту, по которой они шли к Эйрос-12. На
+      ней, за три дня до обнаружения модуля, он нарисовал крест. Точно в том
+      месте, где потом оказался модуль. Он не помнил, когда рисовал. Он не
+      помнил, почему изменил маршрут. Он поднёс карту к лампе.
 
-    <div class="three-knocks">Тук. Тук. Тук.</div>
+      <div class="three-knocks">Тук. Тук. Тук.</div>
 
-    Карта горела. В огне, в дыму, он видел цифры. <strong>«9».</strong> <strong>«10».</strong> <strong>«144».</strong> И — <strong>«7»</strong>. Он не знал, кто был Субстрат №7. Но знал, что Ковалёв умер не зря. Его смерть была не случайностью. Она была черновиком. Как и смерть семнадцати человек в «Северной-4». Как и всё, что было, и всё, что будет. Модуль ждал. И он найдёт субстрат.
+      Карта горела. В огне, в дыму, он видел цифры. <strong>«9».</strong>
+      <strong>«10».</strong> <strong>«144».</strong> И — <strong>«7»</strong>.
+      Он не знал, кто был Субстрат №7. Но знал, что Ковалёв умер не зря. Его
+      смерть была не случайностью. Она была черновиком. Как и смерть семнадцати
+      человек в «Северной-4». Как и всё, что было, и всё, что будет. Модуль
+      ждал. И он найдёт субстрат.
 
-    <div class="three-knocks">Тук. Тук. Тук.</div>
+      <div class="three-knocks">Тук. Тук. Тук.</div>
 
-    Ванн бросил горящую карту в металлическую раковину. Смотрел, как она сворачивается чёрным клочком. В окне броневика, в отражении стекла, мелькнула светящаяся точка. Он не обернулся. Знал: там пустыня. Только пустыня. Но точка осталась. В его груди. Пульсируя. 17.5 Гц. Он прошёл пробу. Или провалил её. Он ещё не знал, что хуже.
+      Ванн бросил горящую карту в металлическую раковину. Смотрел, как она
+      сворачивается чёрным клочком. В окне броневика, в отражении стекла,
+      мелькнула светящаяся точка. Он не обернулся. Знал: там пустыня. Только
+      пустыня. Но точка осталась. В его груди. Пульсируя. 17.5 Гц. Он прошёл
+      пробу. Или провалил её. Он ещё не знал, что хуже.
 
-    <div class="three-knocks">Тук. Тук. Тук.</div>
-</div>
+      <div class="three-knocks">Тук. Тук. Тук.</div>
+    </div>
 
-<!-- ================================================================ -->
-<!-- 8. АВТОРСТВО И ПРАВА -->
-<!-- ================================================================ -->
-<div id="rights"></div>
-<div style="margin: 60px 0;"></div>
-<div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
+    <!-- ================================================================ -->
+    <!-- 8. АВТОРСТВО И ПРАВА -->
+    <!-- ================================================================ -->
+    <div id="rights"></div>
+    <div style="margin: 60px 0"></div>
+    <div class="stamp">СОВЕРШЕННО СЕКРЕТНО</div>
 
-<h1>АВТОРСТВО И ПРАВА</h1>
+    <h1>АВТОРСТВО И ПРАВА</h1>
 
-<p><strong>Автор:</strong> SpaceRus</p>
-<p><strong>Канал:</strong> <a href="https://www.youtube.com/@Space_Rus_240" target="_blank" style="color:#888; text-decoration:underline;">www.youtube.com/@Space_Rus_240</a></p>
-<p><strong>Проект:</strong> Цикл рассказов «A.C.I. — Хроники Сдерживания»</p>
-<p><strong>Вселенная:</strong> «Атлас-Прайм» (оригинальный сеттинг)</p>
+    <p>
+      <strong>Автор:</strong> SpaceRus<br />
+      <strong>Канал:</strong>
+      <a
+        href="https://www.youtube.com/@Space_Rus_240"
+        target="_blank"
+        style="
+          display: inline-block;
+          background-color: #ff0000;
+          color: #ffffff;
+          padding: 6px 18px;
+          border-radius: 4px;
+          text-decoration: none;
+          font-weight: 700;
+          font-family: &quot;Arial&quot;, sans-serif;
+          transition: background-color 0.2s;
+          letter-spacing: 0.5px;
+        "
+      >
+        ▶ YouTube </a
+      ><br />
+      <strong>Проект:</strong> Цикл рассказов «A.C.I. — Хроники Сдерживания»<br />
+      <strong>Вселенная:</strong> «Атлас-Прайм» (оригинальный сеттинг)
+    </p>
 
-<p>Данный текст является оригинальным произведением, созданным автором под псевдонимом SpaceRus. Все права на текст, персонажей, классификацию феноменов, структуру отчётов, названия подразделений, векторы воздействия, сюжетные линии и сеттинг «Атлас-Прайм» принадлежат автору.</p>
+    <p>
+      Данный текст является оригинальным произведением, созданным автором под
+      псевдонимом SpaceRus. Все права на текст, персонажей, классификацию
+      феноменов, структуру отчётов, названия подразделений, векторы воздействия,
+      сюжетные линии и сеттинг «Атлас-Прайм» принадлежат автору.
+    </p>
 
-<div class="archive-note">
-    <strong>ЗАПРЕЩАЕТСЯ</strong>
-    <ul style="list-style: none; padding-left: 0;">
-        <li style="margin-top: 8px;">— Копирование и публикация текста без указания авторства.</li>
-        <li style="margin-top: 8px;">— Использование текста в коммерческих целях без письменного разрешения автора.</li>
-        <li style="margin-top: 8px;">— Изменение текста и выдача его за свой.</li>
-    </ul>
-</div>
+    <div class="archive-note">
+      <strong>ЗАПРЕЩАЕТСЯ</strong>
+      <ul style="list-style: none; padding-left: 0">
+        <li style="margin-top: 8px">
+          — Копирование и публикация текста без указания авторства.
+        </li>
+        <li style="margin-top: 8px">
+          — Использование текста в коммерческих целях без письменного разрешения
+          автора.
+        </li>
+        <li style="margin-top: 8px">
+          — Изменение текста и выдача его за свой.
+        </li>
+      </ul>
+    </div>
 
-<div class="archive-note">
-    <strong>РАЗРЕШАЕТСЯ</strong>
-    <ul style="list-style: none; padding-left: 0;">
-        <li style="margin-top: 8px;">— Публикация с обязательной ссылкой на автора SpaceRus.</li>
-        <li style="margin-top: 8px;">— Создание аудиоверсий, видеороликов, переводов с обязательным указанием авторства.</li>
-        <li style="margin-top: 8px;">— Небольшие цитаты в обзорных и критических материалах.</li>
-    </ul>
-</div>
+    <div class="archive-note">
+      <strong>РАЗРЕШАЕТСЯ</strong>
+      <ul style="list-style: none; padding-left: 0">
+        <li style="margin-top: 8px">
+          — Публикация с обязательной ссылкой на автора SpaceRus.
+        </li>
+        <li style="margin-top: 8px">
+          — Создание аудиоверсий, видеороликов, переводов с обязательным
+          указанием авторства.
+        </li>
+        <li style="margin-top: 8px">
+          — Небольшие цитаты в обзорных и критических материалах.
+        </li>
+      </ul>
+    </div>
 
-<p><strong>Контакты для сотрудничества:</strong> konstanta240@gmail.com</p>
+    <p><strong>Контакты для сотрудничества:</strong> konstanta240@gmail.com</p>
 
-<div class="footer">
-    <p>© <strong>SpaceRus</strong>, 2026. Все права защищены.</p>
-    <p style="margin-top: 10px;">A.C.I. — Atlas Control &amp; Isolation<br>
-    «Лучше потерять миссию, чем потерять контроль.»</p>
-</div>
+    <!-- ФУТЕР -->
+    <div class="footer">
+      A.C.I. — Хроники Сдерживания<br />
+      Все тексты © SpaceRus, 2026<br />
+      Сделано с <span style="color: #333">&#9829;</span> для тех, кто смотрит в
+      бездну
 
-</body>
+      <!-- СЧЁТЧИК ПОСЕЩЕНИЙ -->
+      <div style="margin-top: 20px; opacity: 0.6; font-size: 14px">
+        <div align="center">
+          <a href="https://www.counter12.com">
+            <img
+              src="https://www.counter12.com/img-CZcB71x044DbZaZ8-8.gif"
+              border="0"
+              alt="счётчик посещений"
+            />
+          </a>
+          <script
+            type="text/javascript"
+            src="https://www.counter12.com/ad.js?id=CZcB71x044DbZaZ8"
+          ></script>
+          <br />
+          <a
+            href="https://meuip.page/qual-e-o-meu-ip/"
+            target="_blank"
+            style="font-size: 10px; color: #555; text-decoration: none"
+            >ip fixo</a
+          >
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
